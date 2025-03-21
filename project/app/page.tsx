@@ -13,6 +13,23 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center px-4 py-16 bg-[#fdfff4] min-h-screen">
       <div className="w-full max-w-[568px]">
+        <nav className="flex items-center justify-center mb-12 animate-on-load">
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-1.5">
+              <span className="relative flex h-5 w-5">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-gradient-to-r from-orange-400 to-orange-200 animate-pulse"></span>
+                {/* <span className="relative inline-flex rounded-full h-5 w-5 bg-gradient-to-r from-orange-400 to-orange-200 animate-pulse animate-pulse"></span> */}
+              </span>
+              <a href="#meet-neo" className="text-sm font-medium text-muted-foreground/90 hover:text-primary transition-colors">
+                Meet Neo
+              </a>
+            </div>
+            <a href="#essays" className="text-sm font-medium text-muted-foreground/90 hover:text-primary transition-colors">
+              Essays
+            </a>
+        </div>
+        </nav>
+
         <section className="flex flex-col gap-3 pt-4 animate-on-load delay-100">
           <h1 className="text-[40px] font-semibold tracking-[-1.8px] leading-[60px] mb-4">
             <span className="inline-block transform hover:scale-[1.02] transition-all duration-300 relative">
@@ -48,8 +65,8 @@ export default function Home() {
               </span>
             </a>
             <a href="https://www.linkedin.com/in/chetan-kittali-44b94928a/" 
-              target="_blank" 
-              rel="noopener noreferrer"
+                target="_blank" 
+                rel="noopener noreferrer" 
               className="group flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/30 backdrop-blur-sm border border-gray-100/30 transition-colors duration-200 hover:border-primary"
             >
               <span className="text-muted-foreground/80 group-hover:text-primary/90 transition-colors duration-200">
@@ -60,8 +77,8 @@ export default function Home() {
               </span>
             </a>
             <a href="https://twitter.com/chetankittali" 
-              target="_blank" 
-              rel="noopener noreferrer"
+                target="_blank" 
+                rel="noopener noreferrer" 
               className="group flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/30 backdrop-blur-sm border border-gray-100/30 transition-colors duration-200 hover:border-primary"
             >
               <span className="text-muted-foreground/80 group-hover:text-primary/90 transition-colors duration-200">
@@ -141,8 +158,8 @@ export default function Home() {
                     <h4 className="text-xs font-semibold text-foreground/90">Haegl Technologies</h4>
                   </div>
                   <span className="text-[10px] font-medium text-muted-foreground/90">Bangalore, India</span>
-                </div>
-              </div>
+            </div>
+            </div>
             </div>
           </div>
 
