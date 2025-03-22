@@ -289,3 +289,57 @@
 .delay-500 {
   animation-delay: 500ms;
 }
+
+@keyframes gentle-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes slow-spin {
+  from {
+    transform: rotate(0deg) scale(1);
+  }
+  to {
+    transform: rotate(7200deg) scale(1.25);
+  }
+}
+
+.pulse-animation {
+  animation: gentle-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.hover-spin {
+  transition: transform 0.8s ease-in-out;
+  transform: rotate(0deg) scale(1);
+}
+
+.hover-spin:hover {
+  animation: none;
+  transform: rotate(720deg) scale(1.25);
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+.shimmer-text {
+  background: linear-gradient(120deg, 
+    rgba(83, 83, 83, 0.1) 0%, 
+    rgba(83, 83, 83, 0.9) 25%, 
+    rgba(83, 83, 83, 0.9) 50%, 
+    rgba(83, 83, 83, 0.1) 75%, 
+    rgba(83, 83, 83, 0.9) 100%
+  ) 0 0 / 400% 100%;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s ease-in-out infinite;
+}

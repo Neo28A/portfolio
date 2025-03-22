@@ -8,29 +8,34 @@ import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { MapPin, Briefcase, LineChart, BarChart3, Bot, Lightbulb, Github, Linkedin, Mail, Instagram, Code2, Wrench, Database, GraduationCap, Calendar } from "lucide-react";
 import { PreviousRoles } from "@/components/previous-roles";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <main className="flex flex-col items-center px-4 py-16 bg-[#fdfff4] min-h-screen">
       <div className="w-full max-w-[568px]">
-        <nav className="flex items-center justify-center mb-12 animate-on-load">
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-1.5">
-              <span className="relative flex h-5 w-5">
-                <span className="absolute inline-flex h-full w-full rounded-full bg-gradient-to-r from-orange-400 to-orange-200 animate-pulse"></span>
-                {/* <span className="relative inline-flex rounded-full h-5 w-5 bg-gradient-to-r from-orange-400 to-orange-200 animate-pulse animate-pulse"></span> */}
-              </span>
-              <a href="#meet-neo" className="text-sm font-medium text-muted-foreground/90 hover:text-primary transition-colors">
-                Meet Neo
-              </a>
-            </div>
-            <a href="#essays" className="text-sm font-medium text-muted-foreground/90 hover:text-primary transition-colors">
-              Essays
-            </a>
-        </div>
+        <nav className="flex items-center justify-between mb-12 animate-on-load">
+          <div className="flex items-center gap-2">
+            <Link href="/meet-neo">
+              <div className="w-[24px] h-[24px] rounded-full bg-gradient-to-br from-orange-400 to-orange-200 pulse-animation hover-spin shadow-lg hover:shadow-orange-400/50 relative before:absolute before:inset-0 before:rounded-full before:bg-orange-400/20 before:scale-[1.4] before:opacity-0 hover:before:scale-100 hover:before:opacity-100 before:transition-all before:duration-[2500ms] before:ease-out cursor-pointer">
+              </div>
+            </Link>
+            <Link 
+              href="/meet-neo"
+              className="text-[13px] font-medium tracking-tight shimmer-text cursor-pointer"
+            >
+              Meet Neo!
+            </Link>
+          </div>
+          <Link 
+            href="/essays"
+            className="text-sm font-medium text-muted-foreground/90 hover:text-primary transition-colors"
+          >
+            Essays
+          </Link>
         </nav>
 
-        <section className="flex flex-col gap-3 pt-4 animate-on-load delay-100">
+        <section className="flex flex-col gap-3 pt-1 animate-on-load delay-100">
           <h1 className="text-[40px] font-semibold tracking-[-1.8px] leading-[60px] mb-4">
             <span className="inline-block transform hover:scale-[1.02] transition-all duration-300 relative">
               <span className="bg-gradient-to-r from-primary to-primary/50 bg-clip-text text-transparent">
@@ -39,7 +44,7 @@ export default function Home() {
             </span>
           </h1>
           
-          <div className="flex items-center gap-2 text-[14.9px] tracking-[-0.4px] font-semibold">
+          <div className="flex items-center gap-2 text-[14.9px] tracking-[-0.4px] font-bold text-emperor">
             <span className="text-foreground">data scientist</span>
             <div className="w-1 h-1 rounded-full bg-foreground/70"></div>
             <span className="text-foreground">analyst</span>
@@ -47,8 +52,8 @@ export default function Home() {
             <span className="text-foreground">researcher</span>
           </div>
           
-          <p className="text-[12.8px] leading-6 text-muted-foreground max-w-[600px] tracking-[-0.2px] font-medium">
-            Hi, I'm Chetan, a data enthusiast. I'm fascinated by <span className="text-foreground font-semibold">machine learning</span> and <span className="text-foreground font-semibold">data analytics</span>. I also have a keen interest in <span className="text-foreground font-semibold">statistical modeling</span>. Always looking for new challenges to solve and datasets to explore.
+          <p className="text-[14px] leading-7 text-muted-foreground tracking-[-0.3px]">
+            Hi, I'm Chetan, a data enthusiast. I'm fascinated by <span className="text-foreground/90 font-medium">machine learning</span> and <span className="text-foreground/90 font-medium">data analytics</span>. I also have a keen interest in <span className="text-foreground/90 font-medium">statistical modeling</span>. Always looking for new challenges to solve and datasets to explore.
           </p>
           
           <div className="flex flex-wrap gap-2 mt-4">

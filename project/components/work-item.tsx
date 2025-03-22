@@ -29,7 +29,7 @@ export function WorkItem({ title, href, description, year }: WorkItemProps) {
               </Badge>
             )}
           </div>
-          <p className="text-[12.8px] leading-6 text-muted-foreground max-w-[600px] tracking-[-0.2px] font-medium">
+          <p className="text-[14px] leading-7 text-muted-foreground tracking-[-0.3px]">
             {description}
           </p>
         </div>
