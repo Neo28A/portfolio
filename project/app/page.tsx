@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { ThemeToggle } from "@/components/theme-toggle";
+// import { ThemeToggle } from "@/components/theme-toggle";
 import { WorkItem } from "@/components/work-item";
 import { CollapsibleSection } from "@/components/collapsible-section";
 import { Badge } from "@/components/ui/badge";

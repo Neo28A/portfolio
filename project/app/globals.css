@@ -149,7 +149,7 @@
 }
 
 .gradient-text {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70 dark:from-primary dark:to-primary/70;
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70;
 }
 
 .main-container {
