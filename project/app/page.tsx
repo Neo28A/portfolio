@@ -136,7 +136,7 @@ export default function Home() {
         
         <div className="custom-separator my-3" />
         
-        <section className="section-container animate-on-load delay-250">
+        <section className="section-container animate-on-load delay-200">
           <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground/90 mb-3">Experience</h2>
           <div className="relative mt-3">
             <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-primary/50 to-primary/5"></div>

@@ -5,7 +5,7 @@ import { GeistMono } from 'geist/font/mono';
 import { ThemeProvider } from '@/components/theme-provider';
 
 export const metadata: Metadata = {
-  title: 'Chetan Kittali - Data Scientist & Analyst',
+  title: 'Chetan Kittali',
   description: 'Portfolio of Chetan Kittali, Data Scientist and Analyst',
 };
 
