@@ -22,17 +22,18 @@ export default function MeetNeo() {
                         </h1>
                         
                         <p className="text-[15px] leading-7 text-muted-foreground tracking-[-0.3px]">
-                            Welcome to my digital garden! I'm a passionate data scientist who loves turning complex data into meaningful insights. When I'm not diving deep into datasets, you'll find me exploring new machine learning techniques or visualizing data in creative ways.
+                            Welcome to my digital garden! Say hello to Neo, my personal voice assistant!✨ Neo is here to answer your questions about me—whether it’s my work, projects, or journey in tech.
                         </p>
 
                         <div className="p-4 rounded-lg bg-orange-50/50 border border-orange-100">
                             <p className="text-[14px] leading-6 text-orange-700/90 font-medium">
-                                "The best way to predict the future is to create it. I believe in the power of data to transform how we understand and interact with the world around us."
+                                It's still in development, but I can’t wait for you to try it out soon!
+                                {/* "The best way to predict the future is to create it. I believe in the power of data to transform how we understand and interact with the world around us." */}
                             </p>
                         </div>
 
                         <p className="text-[15px] leading-7 text-muted-foreground tracking-[-0.3px]">
-                            I'm always excited to collaborate on interesting projects or just chat about data science. Feel free to reach out if you'd like to connect!
+                            {/* It's still in development, but I can’t wait for you to try it out soon!" */}
                         </p>
                     </div>
                 </section>

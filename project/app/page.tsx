@@ -1,6 +1,7 @@
+"use client"
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-// import { ThemeToggle } from "@/components/theme-toggle";
 import { WorkItem } from "@/components/work-item";
 import { CollapsibleSection } from "@/components/collapsible-section";
 import { Badge } from "@/components/ui/badge";
@@ -9,10 +10,36 @@ import { Button } from "@/components/ui/button";
 import { MapPin, Briefcase, LineChart, BarChart3, Bot, Lightbulb, Github, Linkedin, Mail, Instagram, Code2, Wrench, Database, GraduationCap, Calendar } from "lucide-react";
 import { PreviousRoles } from "@/components/previous-roles";
 import Link from "next/link";
+import { useEffect, useState } from "react"
 
 export default function Home() {
+  const [localTime, setLocalTime] = useState<string>("")
+  const [gmtTime, setGmtTime] = useState<string>("")
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date()
+      setLocalTime(now.toLocaleTimeString('en-US', { 
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      }))
+      setGmtTime(now.toLocaleTimeString('en-US', {
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: 'GMT'
+      }))
+    }
+
+    updateTime()
+    const interval = setInterval(updateTime, 1000)
+    return () => clearInterval(interval)
+  }, [])
+
   return (
-    <main className="flex flex-col items-center px-4 py-16 bg-[#fdfff4] min-h-screen">
+    <main className="flex flex-col items-center px-4 py-14 bg-[#fdfff4] min-h-screen">
       <div className="w-full max-w-[568px]">
         <nav className="flex items-center justify-between mb-12 animate-on-load">
           <div className="flex items-center gap-2">
@@ -22,17 +49,17 @@ export default function Home() {
             </Link>
             <Link 
               href="/meet-neo"
-              className="text-[13px] font-medium tracking-tight shimmer-text cursor-pointer"
+              className="text-[14px] font-medium tracking-tight shimmer-text cursor-pointer"
             >
               Meet Neo!
             </Link>
           </div>
-          <Link 
+          {/* <Link 
             href="/essays"
             className="text-sm font-medium text-muted-foreground/90 hover:text-primary transition-colors"
           >
             Essays
-          </Link>
+          </Link> */}
         </nav>
 
         <section className="flex flex-col gap-3 pt-1 animate-on-load delay-100">
@@ -308,6 +335,18 @@ export default function Home() {
             </a>
           </div>
         </section>
+
+        {/* Add footer at the bottom */}
+        <footer className="w-full py-4 mt-8 border-t border-zinc-200/50">
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-muted-foreground/70">Chetan Kittali</span>
+            <div className="flex items-center gap-4">
+              <time className="text-xs text-muted-foreground/70">
+                Local Time: {localTime} (GMT: {gmtTime})
+              </time>
+            </div>
+          </div>
+        </footer>
       </div>
     </main>
   );
