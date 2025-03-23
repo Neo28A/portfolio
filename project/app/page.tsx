@@ -43,12 +43,14 @@ export default function Home() {
       <div className="w-full max-w-[568px]">
         <nav className="flex items-center justify-between mb-12 animate-on-load">
           <div className="flex items-center gap-2">
-            <Link href="/meet-neo">
+            <Link href="/meet-neo" rel="noopener noreferrer">
               <div className="w-[24px] h-[24px] rounded-full bg-gradient-to-br from-orange-400 to-orange-200 pulse-animation hover-spin shadow-lg hover:shadow-orange-400/50 relative before:absolute before:inset-0 before:rounded-full before:bg-orange-400/20 before:scale-[1.4] before:opacity-0 hover:before:scale-100 hover:before:opacity-100 before:transition-all before:duration-[2500ms] before:ease-out cursor-pointer">
               </div>
             </Link>
             <Link 
               href="/meet-neo"
+              // target="_blank"
+              rel="noopener noreferrer"
               className="text-[14px] font-medium tracking-tight shimmer-text cursor-pointer"
             >
               Meet Neo!
@@ -80,7 +82,7 @@ export default function Home() {
           </div>
           
           <p className="text-[14px] leading-7 text-muted-foreground tracking-[-0.3px]">
-            Hi, I'm Chetan, a data enthusiast. I'm fascinated by <span className="text-foreground/90 font-medium">machine learning</span> and <span className="text-foreground/90 font-medium">data analytics</span>. I also have a keen interest in <span className="text-foreground/90 font-medium">statistical modeling</span>. Always looking for new challenges to solve and datasets to explore.
+            Hi, I'm Chetan, I'm passionate about <span className="text-foreground/90 font-medium">data science</span> and <span className="text-foreground/90 font-medium">building intelligent system</span>. I enjoy exploring AI and <span className="text-foreground/90 font-medium">uncovering patterns in data</span>. Always looking for innovative ways to solve complex problems and learn something new along the way.
           </p>
           
           <div className="flex flex-wrap gap-2 mt-4">
@@ -108,7 +110,7 @@ export default function Home() {
                 linkedin
               </span>
             </a>
-            <a href="https://twitter.com/chetankittali" 
+            <a href="https://x.com/ChetanKittali" 
                 target="_blank" 
                 rel="noopener noreferrer" 
               className="group flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/30 backdrop-blur-sm border border-gray-100/30 transition-colors duration-200 hover:border-primary"
@@ -179,7 +181,7 @@ export default function Home() {
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between gap-1">
                   <h3 className="font-semibold text-sm text-primary">Data Science Intern</h3>
-                  <span className="text-[10px] font-medium text-muted-foreground/90 px-2 py-0.5 rounded-full bg-secondary/20">2024</span>
+                  <span className="text-[10px] font-medium text-muted-foreground/90 px-2 py-0.5 rounded-full bg-secondary/20">2025</span>
                 </div>
                 
                 <div className="flex items-center justify-between gap-2">
@@ -189,7 +191,7 @@ export default function Home() {
                     </div>
                     <h4 className="text-xs font-semibold text-foreground/90">Haegl Technologies</h4>
                   </div>
-                  <span className="text-[10px] font-medium text-muted-foreground/90">Bangalore, India</span>
+                  <span className="text-[10px] font-medium text-muted-foreground/90">Hubli, India</span>
             </div>
             </div>
             </div>
@@ -200,110 +202,20 @@ export default function Home() {
         
         <div className="custom-separator my-3" />
         
-        <section className="section-container animate-on-load delay-300">
-          <CollapsibleSection title="Skills & Expertise">
-            <div className="block md:hidden">
-              <div className="relative space-y-4 mt-2">
-                <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-primary/50 to-primary/5"></div>
-                
-                <div className="relative">
-                  <div className="pl-6">
-                    <div className="flex items-center gap-1.5 mb-2">
-                      <Code2 size={14} className="text-primary" />
-                      <h3 className="font-semibold text-sm text-foreground/90">Languages</h3>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      <span className="text-xs font-medium text-muted-foreground/90 px-1.5 py-0.5 bg-secondary/20 rounded">Python</span>
-                      <span className="text-xs font-medium text-muted-foreground/90 px-1.5 py-0.5 bg-secondary/20 rounded">SQL</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="relative">
-                  <div className="pl-6">
-                    <div className="flex items-center gap-1.5 mb-2">
-                      <Wrench size={14} className="text-primary" />
-                      <h3 className="font-semibold text-sm text-foreground/90">Tools</h3>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      <span className="text-xs font-medium text-muted-foreground/90 px-1.5 py-0.5 bg-secondary/20 rounded">Tableau</span>
-                      <span className="text-xs font-medium text-muted-foreground/90 px-1.5 py-0.5 bg-secondary/20 rounded">Excel</span>
-                      <span className="text-xs font-medium text-muted-foreground/90 px-1.5 py-0.5 bg-secondary/20 rounded">NumPy, Pandas</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="relative">
-                  <div className="pl-6">
-                    <div className="flex items-center gap-1.5 mb-2">
-                      <Database size={14} className="text-primary" />
-                      <h3 className="font-semibold text-sm text-foreground/90">Techniques</h3>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      <span className="text-xs font-medium text-muted-foreground/90 px-1.5 py-0.5 bg-secondary/20 rounded">Statistical Modeling</span>
-                      <span className="text-xs font-medium text-muted-foreground/90 px-1.5 py-0.5 bg-secondary/20 rounded">Data Cleaning</span>
-                      <span className="text-xs font-medium text-muted-foreground/90 px-1.5 py-0.5 bg-secondary/20 rounded">ETL</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="hidden md:block">
-              <div className="grid grid-cols-3 gap-4 mt-2">
-                <div>
-                  <div className="flex items-center gap-1.5 mb-2">
-                    <Code2 size={14} className="text-primary" />
-                    <h3 className="font-semibold text-sm text-foreground/90">Languages</h3>
-                  </div>
-                  <div className="ml-5 space-y-1 text-xs font-medium text-muted-foreground/90">
-                    <p>Python</p>
-                    <p>SQL</p>
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex items-center gap-1.5 mb-2">
-                    <Wrench size={14} className="text-primary" />
-                    <h3 className="font-semibold text-sm text-foreground/90">Tools</h3>
-                  </div>
-                  <div className="ml-5 space-y-1 text-xs font-medium text-muted-foreground/90">
-                    <p>Tableau</p>
-                    <p>Excel</p>
-                    <p>NumPy, Pandas</p>
-                  </div>
-                </div>
-
-                <div>
-                  <div className="flex items-center gap-1.5 mb-2">
-                    <Database size={14} className="text-primary" />
-                    <h3 className="font-semibold text-sm text-foreground/90">Techniques</h3>
-                  </div>
-                  <div className="ml-5 space-y-1 text-xs font-medium text-muted-foreground/90">
-                    <p>Statistical Modeling</p>
-                    <p>Data Cleaning</p>
-                    <p>ETL</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </CollapsibleSection>
-        </section>
-        
-        <div className="custom-separator my-3" />
-        
         <section className="section-container animate-on-load delay-400">
           <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground/90 mb-3">Recent Work</h2>
           <div className="space-y-0">
-            <WorkItem 
-              title="E-Commerce Product Categorization" 
-              href="#ecommerce-categorization" 
-              description="ML model with 98% accuracy for product classification"
+            <WorkItem
+              title="DocAssist AI"
+              href="https://docassist-ai.netlify.app/"
+              description="DocAssist is an AI-driven medical support system that helps doctors make informed treatment decisions by analyzing patient data"
+              target="_blank"
             />
             <WorkItem 
-              title="Superstore Sales Performance" 
-              href="#superstore-analysis" 
-              description="Regional sales analysis with Tableau dashboards"
+              title="E-Commerce Product Categorization" 
+              href="https://github.com/Neo28A/Hackathon-Ecommerce-Product-Categorization1.git" 
+              description="Developed an model which helps to categorize products based on product description"
+              target="_blank"
             />
             <WorkItem 
               title="Healthcare Analytics" 
@@ -311,7 +223,9 @@ export default function Home() {
               description="Patient health metrics analysis and visualization"
             />
             <a 
-              href="#works" 
+              href="https://github.com/Neo28A" 
+              target="_blank"
+              rel="noopener noreferrer"
               className="group flex items-center justify-center p-2 rounded-lg hover:bg-secondary/30 transition-colors"
             >
               <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground/90 group-hover:text-primary">
@@ -335,6 +249,98 @@ export default function Home() {
             </a>
           </div>
         </section>
+
+        {/* <div className="custom-separator my-3" /> */}
+
+        {/* <section className="section-container animate-on-load delay-300">
+          <CollapsibleSection title="Skills & Expertise">
+            <div className="block md:hidden">
+              <div className="relative space-y-4 mt-2">
+                <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-primary/50 to-primary/5"></div>
+
+                <div className="relative">
+                  <div className="pl-6">
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <Code2 size={14} className="text-primary" />
+                      <h3 className="font-semibold text-sm text-foreground/90">Languages</h3>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      <span className="text-xs font-medium text-muted-foreground/90 px-1.5 py-0.5 bg-secondary/20 rounded">Python</span>
+                      <span className="text-xs font-medium text-muted-foreground/90 px-1.5 py-0.5 bg-secondary/20 rounded">SQL</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="relative">
+                  <div className="pl-6">
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <Wrench size={14} className="text-primary" />
+                      <h3 className="font-semibold text-sm text-foreground/90">Tools</h3>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      <span className="text-xs font-medium text-muted-foreground/90 px-1.5 py-0.5 bg-secondary/20 rounded">Tableau</span>
+                      <span className="text-xs font-medium text-muted-foreground/90 px-1.5 py-0.5 bg-secondary/20 rounded">Excel</span>
+                      <span className="text-xs font-medium text-muted-foreground/90 px-1.5 py-0.5 bg-secondary/20 rounded">Scikit-learn</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="relative">
+                  <div className="pl-6">
+                    <div className="flex items-center gap-1.5 mb-2">
+                      <Database size={14} className="text-primary" />
+                      <h3 className="font-semibold text-sm text-foreground/90">Technologies</h3>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      <span className="text-xs font-medium text-muted-foreground/90 px-1.5 py-0.5 bg-secondary/20 rounded">TensorFlow</span>
+                      <span className="text-xs font-medium text-muted-foreground/90 px-1.5 py-0.5 bg-secondary/20 rounded">PyTorch</span>
+                      <span className="text-xs font-medium text-muted-foreground/90 px-1.5 py-0.5 bg-secondary/20 rounded">NLTK / spaCy</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="hidden md:block">
+              <div className="grid grid-cols-3 gap-4 mt-2">
+                <div>
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <Code2 size={14} className="text-primary" />
+                    <h3 className="font-semibold text-sm text-foreground/90">Languages</h3>
+                  </div>
+                  <div className="ml-5 space-y-1 text-xs font-medium text-muted-foreground/90">
+                    <p>Python</p>
+                    <p>SQL</p>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <Wrench size={14} className="text-primary" />
+                    <h3 className="font-semibold text-sm text-foreground/90">Tools</h3>
+                  </div>
+                  <div className="ml-5 space-y-1 text-xs font-medium text-muted-foreground/90">
+                    <p>Tableau</p>
+                    <p>Excel</p>
+                    <p>Scikit-learn</p>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <Database size={14} className="text-primary" />
+                    <h3 className="font-semibold text-sm text-foreground/90">Technologies</h3>
+                  </div>
+                  <div className="ml-5 space-y-1 text-xs font-medium text-muted-foreground/90">
+                    <p>TensorFlow</p>
+                    <p>PyTorch</p>
+                    <p>NLTK / spaCy</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CollapsibleSection>
+        </section> */}
 
         {/* Add footer at the bottom */}
         <footer className="w-full py-4 mt-8 border-t border-zinc-200/50">

@@ -1,3 +1,5 @@
+"use client"
+
 import Link from 'next/link';
 
 export default function MeetNeo() {
@@ -13,30 +15,36 @@ export default function MeetNeo() {
                     </Link>
                 </nav>
 
-                <section className="flex flex-col gap-6 animate-on-load delay-100">
-                    <div className="space-y-4">
-                        <h1 className="text-[40px] font-semibold tracking-[-1.8px] leading-[1.2]">
-                            <span className="bg-gradient-to-r from-orange-400 to-orange-200 bg-clip-text text-transparent">
-                                Hey, I'm Neo! 👋
-                            </span>
-                        </h1>
+                <div className="flex flex-col items-center justify-center gap-8 animate-on-load delay-100">
+                    {/* AI Assistant Dot */}
+                    <div className="relative w-[210px] h-[210px] rounded-full bg-gradient-to-br from-orange-400 via-orange-200 to-white shadow-lg hover:scale-105 transition-transform duration-700">
+                        {/* Inner glow effect */}
+                        <div className="absolute inset-0 rounded-full bg-gradient-to-t from-transparent via-white/30 to-white/50 opacity-70"></div>
                         
-                        <p className="text-[15px] leading-7 text-muted-foreground tracking-[-0.3px]">
-                            Welcome to my digital garden! Say hello to Neo, my personal voice assistant!✨ Neo is here to answer your questions about me—whether it’s my work, projects, or journey in tech.
+                        {/* Pulse animation ring */}
+                        <div className="absolute -inset-4 rounded-full bg-gradient-to-br from-orange-200/20 to-transparent animate-pulse"></div>
+                        
+                        {/* Shine effect */}
+                        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/40 via-transparent to-transparent rotate-45 animate-shine"></div>
+
+                        {/* Floating animation */}
+                        <div className="absolute inset-0 rounded-full animate-float"></div>
+                    </div>
+
+                    <div className="text-center space-y-4">
+                        <h1 className="text-2xl font-semibold tracking-tight bg-gradient-to-r from-orange-400 to-orange-200 bg-clip-text text-transparent">
+                            Hey, I'm Neo! 👋
+                        </h1>
+                        <p className="text-muted-foreground text-sm leading-relaxed max-w-[480px]">
+                            I'm Chetan's AI assistant, here to help you learn more about him. Ask me about his work, 
+                            experience, or interests in data science and machine learning. I have access to his portfolio 
+                            and can provide detailed insights about his projects and skills.
                         </p>
-
-                        <div className="p-4 rounded-lg bg-orange-50/50 border border-orange-100">
-                            <p className="text-[14px] leading-6 text-orange-700/90 font-medium">
-                                It's still in development, but I can’t wait for you to try it out soon!
-                                {/* "The best way to predict the future is to create it. I believe in the power of data to transform how we understand and interact with the world around us." */}
-                            </p>
-                        </div>
-
-                        <p className="text-[15px] leading-7 text-muted-foreground tracking-[-0.3px]">
-                            {/* It's still in development, but I can’t wait for you to try it out soon!" */}
+                        <p className="text-xs text-muted-foreground/80 italic">
+                            Try asking: "What are Chetan's main areas of expertise?" or "Tell me about his recent projects"
                         </p>
                     </div>
-                </section>
+                </div>
             </div>
         </main>
     );

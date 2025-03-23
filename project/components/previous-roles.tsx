@@ -41,15 +41,15 @@ export function PreviousRoles() {
           <div className="absolute left-[-14px] top-1.5 w-[5px] h-[5px] rounded-full bg-primary/20 ring-[1px] ring-background"></div>
           <div className="space-y-1">
             <div className="flex items-center justify-between gap-1">
-              <h3 className="font-semibold text-[11px] text-primary/90">Data Analytics Intern</h3>
-              <span className="text-[9px] text-muted-foreground/80 px-1.5 py-0.5 rounded-full bg-secondary/20">2023</span>
+              <h3 className="font-semibold text-[11px] text-primary/90">ML Research Intern</h3>
+              <span className="text-[9px] text-muted-foreground/80 px-1.5 py-0.5 rounded-full bg-secondary/20">2024</span>
             </div>
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-1.5">
                 <div className="flex items-center justify-center w-4 h-4 rounded-md bg-secondary/20">
                   <span className="text-[10px] font-medium text-primary/70">T</span>
                 </div>
-                <h4 className="text-[10px] text-muted-foreground">TechCorp Solutions</h4>
+                <h4 className="text-[10px] text-muted-foreground">Compsoft Technologies</h4>
               </div>
               <span className="text-[9px] text-muted-foreground/80">Bangalore, India</span>
             </div>
@@ -57,7 +57,7 @@ export function PreviousRoles() {
         </div>
 
         {/* Previous Role 2 */}
-        <div className="relative">
+        {/* <div className="relative">
           <div className="absolute left-[-14px] top-1.5 w-[5px] h-[5px] rounded-full bg-primary/20 ring-[1px] ring-background"></div>
           <div className="space-y-1">
             <div className="flex items-center justify-between gap-1">
@@ -74,7 +74,7 @@ export function PreviousRoles() {
               <span className="text-[9px] text-muted-foreground/80">Hubballi, India</span>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
