@@ -53,9 +53,9 @@ export default function Home() {
               rel="noopener noreferrer"
               className="text-[14px] font-medium tracking-tight shimmer-text cursor-pointer"
             >
-              Meet Neo!
+              Meet Iva!
             </Link>
-          </div>
+        </div>
           {/* <Link 
             href="/essays"
             className="text-sm font-medium text-muted-foreground/90 hover:text-primary transition-colors"
