@@ -107,26 +107,19 @@ export default function MeetNeo() {
                                 <span className="text-[10px] font-medium text-muted-foreground/80">LIVE</span>
                             </div>
                         )}
-                        
-                        {/* Status indicator */}
-                        {/* <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-muted-foreground/80 italic">
-                            {!connected && 'Click to start'}
-                            {connected && speaking && 'Tap to interrupt'}
-                            {connected && userSpeaking && 'Listening...'}
-                            {connected && !speaking && !userSpeaking && 'Ready to talk'}
-                        </div> */}
+
                     </button>
 
                     <div className="text-center space-y-4">
                         {/* <h1 className="text-2xl font-semibold tracking-tight bg-gradient-to-r from-orange-400 to-orange-200 bg-clip-text text-transparent">
                             Hey, I'm Iva! 👋
-                        </h1>
-                        <p className="text-muted-foreground text-sm leading-relaxed max-w-[480px]">
-                            I'm Chetan's AI assistant, here to help you learn more about him. Ask me about his work, 
-                            experience, or interests in data science and machine learning.
-                        </p> */}
+                        </h1> */}
                         <p className="text-xs text-muted-foreground/80 italic">
-                            {connected ? 'Try asking: "What are Chetan\'s skills?" or "How can I contact Chetan?"' : 'Click the orange dot to start talking with me!'}
+                            {connected ? 'Try asking: "What are Chetan\'s recent works?" or "How can I contact Chetan?"' : 'Click the orange dot to start or stop talking with me!'}
+                        </p>
+                        <p className="text-muted-foreground text-sm leading-relaxed max-w-[480px]">
+                            {connected ? '' : 'Meet Iva "Intelligent Virtual Assistant", My personal AI assistant.'}
+                            
                         </p>
                     </div>
                 </div>
