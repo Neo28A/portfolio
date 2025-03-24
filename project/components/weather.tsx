@@ -11,37 +11,46 @@ interface WeatherData {
 export function Weather() {
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchWeather = async () => {
       try {
+        setLoading(true);
+        setError(null);
+
         // Get user's location
         const position = await new Promise<GeolocationPosition>((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(resolve, reject);
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            timeout: 5000,
+            enableHighAccuracy: false
+          });
         });
 
         const { latitude, longitude } = position.coords;
         
-        // Replace YOUR_API_KEY with your actual OpenWeatherMap API key
+        console.log('Fetching weather for:', latitude, longitude); // Debug log
+
         const response = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}&units=metric`
+          `/api/weather?lat=${latitude}&lon=${longitude}`
         );
         
-        const data = await response.json();
+        if (!response.ok) {
+          throw new Error('Failed to fetch weather');
+        }
         
-        setWeather({
-          temp: Math.round(data.main.temp),
-          condition: data.weather[0].main.toLowerCase(),
-        });
+        const data = await response.json();
+        console.log('Weather data:', data); // Debug log
+        setWeather(data);
       } catch (error) {
         console.error('Error fetching weather:', error);
+        setError(error instanceof Error ? error.message : 'Failed to load weather');
       } finally {
         setLoading(false);
       }
     };
 
     fetchWeather();
-    // Update weather every 5 minutes
     const interval = setInterval(fetchWeather, 5 * 60 * 1000);
     
     return () => clearInterval(interval);
@@ -69,7 +78,24 @@ export function Weather() {
     }
   };
 
-  if (loading) return null;
+  if (loading) {
+    return (
+      <div className="flex items-center gap-1.5 text-[14px] text-muted-foreground/90">
+        <Cloud size={16} className="animate-pulse" />
+        <span>Loading...</span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center gap-1.5 text-[14px] text-muted-foreground/90">
+        <Cloud size={16} />
+        <span>--°C</span>
+      </div>
+    );
+  }
+
   if (!weather) return null;
 
   return (

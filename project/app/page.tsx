@@ -57,8 +57,10 @@ export default function Home() {
             </Link>
           </div>
           
-          {/* Weather Widget */}
-          <Weather />
+          {/* Weather Widget with a wrapper for visibility */}
+          <div className="flex items-center">
+            <Weather />
+          </div>
         </nav>
 
         <section className="flex flex-col gap-3 pt-1 animate-on-load delay-100">
