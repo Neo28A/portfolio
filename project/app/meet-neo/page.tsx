@@ -115,12 +115,12 @@ export default function MeetNeo() {
                             Hey, I'm Iva! 👋
                         </h1> */}
                         <p className="text-xs text-muted-foreground/80 italic">
-                            {connected ? 'Try asking: "What are Chetan\'s recent works?" or "How can I contact Chetan?"' : 'Click the orange dot to start or stop talking with me!'}
+                            {connected ? '' : 'Meet Iva "Intelligent Virtual Assistant", My personal AI assistant.'}
                         </p>
                         <p className="text-muted-foreground text-sm leading-relaxed max-w-[480px]">
-                            {connected ? '' : 'Meet Iva "Intelligent Virtual Assistant", My personal AI assistant.'}
-                            
+                            {connected ? 'Try asking: "What are Chetan\'s recent works?" or "How can I contact Chetan?"' : 'Click the orange dot to start or stop talking with me!'}
                         </p>
+                        
                     </div>
                 </div>
             </div>

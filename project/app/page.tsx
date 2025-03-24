@@ -51,7 +51,7 @@ export default function Home() {
               href="/meet-neo"
               // target="_blank"
               rel="noopener noreferrer"
-              className="text-[14px] font-medium tracking-tight shimmer-text cursor-pointer"
+              className="text-[14px] text-foreground/90 font-medium shimmer-text"
             >
               Meet Iva!
             </Link>
@@ -66,10 +66,8 @@ export default function Home() {
 
         <section className="flex flex-col gap-3 pt-1 animate-on-load delay-100">
           <h1 className="text-[40px] font-semibold tracking-[-1.8px] leading-[60px] mb-4">
-            <span className="inline-block transform hover:scale-[1.02] transition-all duration-300 relative">
-              <span className="bg-gradient-to-r from-primary to-primary/50 bg-clip-text text-transparent">
-                Chetan Kittali
-              </span>
+            <span className="bg-gradient-to-r from-primary to-primary/50 bg-clip-text text-transparent">
+              Chetan Kittali
             </span>
           </h1>
           
