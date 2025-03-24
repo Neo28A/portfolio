@@ -11,6 +11,7 @@ import { MapPin, Briefcase, LineChart, BarChart3, Bot, Lightbulb, Github, Linked
 import { PreviousRoles } from "@/components/previous-roles";
 import Link from "next/link";
 import { useEffect, useState } from "react"
+import { Weather } from "@/components/weather";
 
 export default function Home() {
   const [localTime, setLocalTime] = useState<string>("")
@@ -49,19 +50,15 @@ export default function Home() {
             </Link>
             <Link 
               href="/meet-neo"
-              // target="_blank"
               rel="noopener noreferrer"
               className="text-[14px] text-foreground/90 font-medium shimmer-text"
             >
               Meet Iva!
             </Link>
-        </div>
-          {/* <Link 
-            href="/essays"
-            className="text-sm font-medium text-muted-foreground/90 hover:text-primary transition-colors"
-          >
-            Essays
-          </Link> */}
+          </div>
+          
+          {/* Weather Widget */}
+          <Weather />
         </nav>
 
         <section className="flex flex-col gap-3 pt-1 animate-on-load delay-100">
