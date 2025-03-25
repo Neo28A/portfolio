@@ -21,22 +21,18 @@ export function Weather() {
     const fetchWeather = async () => {
         try {
             setLoading(true)
-            const response = await fetch('/api/weather', {
-                // Add cache busting query parameter
-                headers: {
-                    'Cache-Control': 'no-cache',
-                    'Pragma': 'no-cache'
-                }
-            })
-            if (!response.ok) {
-                throw new Error('Weather fetch failed')
-            }
+            const response = await fetch('/api/weather')
             const data = await response.json()
+            
+            if (data.error) {
+                throw new Error(data.error)
+            }
+            
             setWeather(data)
             setError(null)
         } catch (error) {
             console.error('Error fetching weather:', error)
-            setError('Failed to load weather')
+            setError(error instanceof Error ? error.message : 'Failed to load weather')
         } finally {
             setLoading(false)
         }
@@ -74,6 +70,7 @@ export function Weather() {
     if (error) {
         return (
             <div className="flex items-center gap-2 text-muted-foreground/80">
+                <Cloud size={16} className="text-gray-400" />
                 <span className="text-[14px] font-medium">--°C</span>
             </div>
         )
