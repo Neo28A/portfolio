@@ -72,16 +72,13 @@ export default function MeetNeo() {
                 </nav>
 
                 <div className="flex flex-col items-center justify-center gap-8 animate-on-load delay-100">
-                    <button
+                    <button 
                         onClick={connected ? stopConversation : startConversation}
-                        className="relative w-[160px] h-[160px] rounded-full shadow-lg focus:outline-none overflow-hidden backdrop-blur-sm"
+                        className="relative w-[160px] h-[160px] rounded-full bg-gradient-to-br from-orange-200 via-orange-400 to-white shadow-lg focus:outline-none"
                         aria-label={connected ? "Stop conversation" : "Start conversation"}
                     >
-                        {/* Base sunset gradient */}
-                        <div className="absolute inset-0 rounded-full bg-gradient-to-b from-white via-orange-200 to-orange-400"></div>
-
                         {/* Inner glow effect */}
-                        <div className="absolute inset-0 rounded-full bg-gradient-to-t from-transparent via-white/40 to-white/60 opacity-50"></div>
+                        <div className="absolute inset-0 rounded-full bg-gradient-to-t from-transparent via-white/30 to-white/50 opacity-20"></div>
                         
                         {/* Dynamic wave animation when connected */}
                         {connected && (
@@ -121,7 +118,7 @@ export default function MeetNeo() {
                             {connected ? '' : 'Meet Iva "Intelligent Virtual Assistant", My personal AI assistant.'}
                         </p>
                         <p className="text-muted-foreground text-sm leading-relaxed max-w-[480px]">
-                            {connected ? 'Try asking: "What are Chetan\'s recent works?" or "How can I contact Chetan?"' : 'Click the orange dot to start or stop talking with Iva!'}
+                            {connected ? 'Try asking: "What are Chetan\'s recent works?" or "How can I contact Chetan?"' : 'Click the orange dot to start or stop talking with me!'}
                         </p>
                         
                     </div>

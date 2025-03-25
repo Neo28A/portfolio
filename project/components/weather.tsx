@@ -20,7 +20,14 @@ export function Weather() {
 
     const fetchWeather = async () => {
         try {
-            const response = await fetch('/api/weather')
+            setLoading(true)
+            const response = await fetch('/api/weather', {
+                // Add cache busting query parameter
+                headers: {
+                    'Cache-Control': 'no-cache',
+                    'Pragma': 'no-cache'
+                }
+            })
             if (!response.ok) {
                 throw new Error('Weather fetch failed')
             }
@@ -37,6 +44,7 @@ export function Weather() {
 
     useEffect(() => {
         fetchWeather()
+        // Update weather every 1 minute
         const interval = setInterval(fetchWeather, 60 * 1000)
         return () => clearInterval(interval)
     }, [])
@@ -81,7 +89,7 @@ export function Weather() {
     }
 
     return (
-        <div className="flex items-center gap-2 relative group">
+        <div className="flex items-center gap-2 relative">
             {loading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-background/50">
                     <Loader2 size={12} className="animate-spin" />
@@ -92,9 +100,6 @@ export function Weather() {
                     {getWeatherIcon(weather.weather[0].main)}
                     <span className="text-[14px] font-medium text-muted-foreground/80">
                         {Math.round(weather.main.temp)}°C
-                    </span>
-                    <span className="absolute bottom-full mb-1 text-xs text-muted-foreground/70 bg-white/80 px-2 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                        {weather.weather[0].description}
                     </span>
                 </>
             )}
