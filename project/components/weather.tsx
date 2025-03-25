@@ -16,23 +16,38 @@ interface WeatherData {
 export function Weather() {
     const [weather, setWeather] = useState<WeatherData | null>(null)
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
+
+    const fetchWeather = async () => {
+        try {
+            const response = await fetch('/api/weather', {
+                // Prevent caching
+                cache: 'no-store',
+                headers: {
+                    'Cache-Control': 'no-cache'
+                }
+            })
+            if (!response.ok) {
+                throw new Error('Weather fetch failed')
+            }
+            const data = await response.json()
+            setWeather(data)
+            setError(null)
+        } catch (error) {
+            console.error('Error fetching weather:', error)
+            setError('Failed to load weather')
+        } finally {
+            setLoading(false)
+        }
+    }
 
     useEffect(() => {
-        const fetchWeather = async () => {
-            try {
-                const response = await fetch('/api/weather')
-                const data = await response.json()
-                setWeather(data)
-            } catch (error) {
-                console.error('Error fetching weather:', error)
-            } finally {
-                setLoading(false)
-            }
-        }
-
         fetchWeather()
-        // Update weather every 5 minutes
-        const interval = setInterval(fetchWeather, 5 * 60 * 1000)
+        
+        // Update every 30 seconds
+        const interval = setInterval(fetchWeather, 30 * 1000)
+        
+        // Cleanup interval on unmount
         return () => clearInterval(interval)
     }, [])
 
@@ -67,11 +82,21 @@ export function Weather() {
         )
     }
 
+    if (error) {
+        return (
+            <div className="flex items-center gap-2 text-muted-foreground/80">
+                <span className="text-[14px] font-medium">--°C</span>
+            </div>
+        )
+    }
+
     if (!weather) return null
 
     return (
-        <div className="flex items-center gap-2">
-            {getWeatherIcon(weather.weather[0].main)}
+        <div className="flex items-center gap-2 group">
+            <div className="transition-transform duration-300 group-hover:scale-110">
+                {getWeatherIcon(weather.weather[0].main)}
+            </div>
             <span className="text-[14px] font-medium text-muted-foreground/80">
                 {Math.round(weather.main.temp)}°C
             </span>
