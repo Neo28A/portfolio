@@ -3,47 +3,38 @@ import { NextResponse } from 'next/server';
 export const revalidate = 0; // Disable caching
 
 export async function GET() {
-    // Check if API key exists
-    if (!process.env.OPENWEATHER_API_KEY) {
-        console.error('OpenWeather API key is not configured');
-        return NextResponse.json(
-            { error: 'Weather API is not configured' },
-            { status: 500 }
-        );
-    }
-
     try {
+        // Log to verify API key is available
+        console.log('API Key exists:', !!process.env.OPENWEATHER_API_KEY);
+
         const url = `https://api.openweathermap.org/data/2.5/weather?q=Hubli&units=metric&appid=${process.env.OPENWEATHER_API_KEY}`;
+        console.log('Fetching weather from:', url.replace(process.env.OPENWEATHER_API_KEY!, 'HIDDEN_KEY'));
+
+        const response = await fetch(url);
         
-        const response = await fetch(url, {
-            // Add cache control headers
-            cache: 'no-store',
-            headers: {
-                'Cache-Control': 'no-cache',
-                'Pragma': 'no-cache'
-            }
-        });
+        // Log the response status
+        console.log('Weather API response status:', response.status);
 
         if (!response.ok) {
-            const errorData = await response.json();
-            console.error('Weather API error:', errorData);
-            throw new Error(`Weather API error: ${response.status}`);
+            const errorText = await response.text();
+            console.error('Weather API error response:', errorText);
+            return NextResponse.json(
+                { error: `API Error: ${response.status}`, details: errorText },
+                { status: response.status }
+            );
         }
 
         const data = await response.json();
-        
-        // Add cache control headers to the response
-        return NextResponse.json(data, {
-            headers: {
-                'Cache-Control': 'no-cache, no-store, must-revalidate',
-                'Pragma': 'no-cache',
-                'Expires': '0'
-            }
+        console.log('Weather data received:', {
+            temp: data.main?.temp,
+            weather: data.weather?.[0]?.main
         });
+
+        return NextResponse.json(data);
     } catch (error) {
-        console.error('Failed to fetch weather:', error);
+        console.error('Weather API catch block error:', error);
         return NextResponse.json(
-            { error: 'Failed to fetch weather data' },
+            { error: 'Weather API error', details: error instanceof Error ? error.message : 'Unknown error' },
             { status: 500 }
         );
     }
