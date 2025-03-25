@@ -20,39 +20,16 @@ export function Weather() {
 
     const fetchWeather = async () => {
         try {
-            setLoading(true)
-            const response = await fetch('/api/weather', {
-                headers: {
-                    'Cache-Control': 'no-cache',
-                    'Pragma': 'no-cache'
-                }
-            })
-            
-            // Log the response status and headers
-            console.log('Weather API Response:', {
-                status: response.status,
-                statusText: response.statusText,
-                headers: Object.fromEntries(response.headers.entries())
-            })
-
+            const response = await fetch('/api/weather')
             if (!response.ok) {
-                const errorText = await response.text()
-                console.error('Weather API Error:', errorText)
-                throw new Error(`Weather fetch failed: ${errorText}`)
+                throw new Error('Weather fetch failed')
             }
-
             const data = await response.json()
-            console.log('Weather Data:', data) // Log the actual data
-            
-            if (!data.main || !data.weather) {
-                throw new Error('Invalid weather data format')
-            }
-
             setWeather(data)
             setError(null)
         } catch (error) {
             console.error('Error fetching weather:', error)
-            setError(error instanceof Error ? error.message : 'Failed to load weather')
+            setError('Failed to load weather')
         } finally {
             setLoading(false)
         }
@@ -112,13 +89,12 @@ export function Weather() {
             )}
             {weather && (
                 <>
-                    <span className="text-[14px] font-medium text-muted-foreground/80">Bengaluru</span>
                     {getWeatherIcon(weather.weather[0].main)}
                     <span className="text-[14px] font-medium text-muted-foreground/80">
                         {Math.round(weather.main.temp)}°C
                     </span>
                     <span className="absolute bottom-full mb-1 text-xs text-muted-foreground/70 bg-white/80 px-2 py-1 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                        current weather {weather.weather[0].description}
+                        {weather.weather[0].description}
                     </span>
                 </>
             )}
