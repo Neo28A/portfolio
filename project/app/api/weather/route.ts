@@ -3,8 +3,12 @@ import { NextResponse } from 'next/server';
 export async function GET() {
     try {
         // Hubli coordinates
-        const lat = "15.3647";
-        const lon = "75.1240";
+        // const lat = "15.3647";
+        // const lon = "75.1240";
+
+        // Bengaluru coordinates
+        const lat = "12.9716";
+        const lon = "77.5946";
         
         const response = await fetch(
             `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${process.env.OPENWEATHER_API_KEY}&t=${Date.now()}`,

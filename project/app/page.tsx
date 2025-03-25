@@ -113,17 +113,17 @@ export default function Home() {
           {weather && (
             <div className="flex items-center gap-2 text-muted-foreground/80 group relative">
               <div className="flex items-center gap-1.5">
-                <span className="text-xs">Hubli</span>
-                {getWeatherIcon(weather.condition)}
+                {/* {getWeatherIcon(weather.condition)} */}
                 <div className="flex flex-col items-end">
                   <span className="text-sm font-medium">{weather.temp}°C</span>
                 </div>
+                <span className="text-xs">Bengaluru</span>
               </div>
               
               {/* Tooltip */}
               <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
                 <span className="text-[10px] text-muted-foreground/60 whitespace-nowrap">
-                  current weather {weather.condition}
+                  current weather
                 </span>
               </div>
             </div>
