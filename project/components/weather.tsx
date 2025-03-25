@@ -27,15 +27,32 @@ export function Weather() {
                     'Pragma': 'no-cache'
                 }
             })
+            
+            // Log the response status and headers
+            console.log('Weather API Response:', {
+                status: response.status,
+                statusText: response.statusText,
+                headers: Object.fromEntries(response.headers.entries())
+            })
+
             if (!response.ok) {
-                throw new Error('Weather fetch failed')
+                const errorText = await response.text()
+                console.error('Weather API Error:', errorText)
+                throw new Error(`Weather fetch failed: ${errorText}`)
             }
+
             const data = await response.json()
+            console.log('Weather Data:', data) // Log the actual data
+            
+            if (!data.main || !data.weather) {
+                throw new Error('Invalid weather data format')
+            }
+
             setWeather(data)
             setError(null)
         } catch (error) {
             console.error('Error fetching weather:', error)
-            setError('Failed to load weather')
+            setError(error instanceof Error ? error.message : 'Failed to load weather')
         } finally {
             setLoading(false)
         }
