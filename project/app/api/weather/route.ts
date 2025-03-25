@@ -5,7 +5,7 @@ export const revalidate = 0; // Disable caching
 export async function GET() {
     try {
         const response = await fetch(
-            `https://api.openweathermap.org/data/2.5/weather?q=Bengalore&units=metric&appid=${process.env.OPENWEATHER_API_KEY}`,
+            `https://api.openweathermap.org/data/2.5/weather?q=Bengaluru&units=metric&appid=${process.env.OPENWEATHER_API_KEY}`,
             {
                 // Add cache control headers
                 cache: 'no-store',

@@ -95,7 +95,7 @@ export function Weather() {
             )}
             {weather && (
                 <>
-                    <span className="text-[14px] font-medium text-muted-foreground/80">Bangalore</span>
+                    <span className="text-[14px] font-medium text-muted-foreground/80">Bengaluru</span>
                     {getWeatherIcon(weather.weather[0].main)}
                     <span className="text-[14px] font-medium text-muted-foreground/80">
                         {Math.round(weather.main.temp)}°C
