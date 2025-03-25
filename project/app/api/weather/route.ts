@@ -10,7 +10,13 @@ export async function GET() {
         const url = `https://api.openweathermap.org/data/2.5/weather?q=Hubli&units=metric&appid=${process.env.OPENWEATHER_API_KEY}`;
         console.log('Fetching weather from:', url.replace(process.env.OPENWEATHER_API_KEY!, 'HIDDEN_KEY'));
 
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            cache: 'no-store',
+            headers: {
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache'
+            }
+        });
         
         // Log the response status
         console.log('Weather API response status:', response.status);
