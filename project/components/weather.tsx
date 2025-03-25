@@ -17,25 +17,39 @@ export function Weather() {
     const [weather, setWeather] = useState<WeatherData | null>(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
+    const [retryCount, setRetryCount] = useState(0)
 
     const fetchWeather = async () => {
         try {
             const response = await fetch('/api/weather', {
-                // Prevent caching
                 cache: 'no-store',
                 headers: {
+                    'Accept': 'application/json',
                     'Cache-Control': 'no-cache'
                 }
             })
+
             if (!response.ok) {
-                throw new Error('Weather fetch failed')
+                const errorData = await response.json().catch(() => ({}));
+                console.error('Weather fetch error:', errorData);
+                throw new Error(errorData.error || 'Failed to fetch weather');
             }
+
             const data = await response.json()
             setWeather(data)
             setError(null)
+            setRetryCount(0)
         } catch (error) {
             console.error('Error fetching weather:', error)
             setError('Failed to load weather')
+            
+            // Retry logic
+            if (retryCount < 3) {
+                setTimeout(() => {
+                    setRetryCount(prev => prev + 1)
+                    fetchWeather()
+                }, 2000) // Retry after 2 seconds
+            }
         } finally {
             setLoading(false)
         }
