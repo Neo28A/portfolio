@@ -1,56 +1,37 @@
 import { NextResponse } from 'next/server';
 
-export const revalidate = 0; // Disable caching
-
 export async function GET() {
     try {
-        if (!process.env.OPENWEATHER_API_KEY) {
-            console.error('OpenWeather API key is not defined');
-            throw new Error('API key not configured');
-        }
-
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=Hubli&units=metric&appid=${process.env.OPENWEATHER_API_KEY}`;
+        // Hubli coordinates
+        const lat = "15.3647";
+        const lon = "75.1240";
         
-        const response = await fetch(url, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            cache: 'no-store'
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error('Weather API error:', errorText);
-            throw new Error(`Weather API error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        
-        // Add cache control headers
-        return NextResponse.json(data, {
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods': 'GET',
-                'Access-Control-Allow-Headers': 'Content-Type',
-                'Cache-Control': 'no-store, max-age=0',
-                'Pragma': 'no-cache'
-            }
-        });
-    } catch (error) {
-        console.error('Weather fetch error:', error);
-        return NextResponse.json(
-            { error: 'Failed to fetch weather data' },
-            { 
-                status: 500,
+        const response = await fetch(
+            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${process.env.OPENWEATHER_API_KEY}&t=${Date.now()}`,
+            {
+                cache: 'no-store',
                 headers: {
-                    'Access-Control-Allow-Origin': '*',
-                    'Access-Control-Allow-Methods': 'GET',
-                    'Access-Control-Allow-Headers': 'Content-Type',
-                    'Cache-Control': 'no-store, max-age=0',
+                    'Cache-Control': 'no-cache',
                     'Pragma': 'no-cache'
                 }
             }
+        );
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch weather data');
+        }
+
+        const data = await response.json();
+        return NextResponse.json({
+            temp: Math.round(data.main.temp),
+            condition: data.weather[0].main,
+            icon: data.weather[0].icon,
+            feels_like: Math.round(data.main.feels_like)
+        });
+    } catch (error) {
+        return NextResponse.json(
+            { error: 'Failed to fetch weather data' },
+            { status: 500 }
         );
     }
 } 

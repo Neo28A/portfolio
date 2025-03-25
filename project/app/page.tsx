@@ -7,15 +7,22 @@ import { CollapsibleSection } from "@/components/collapsible-section";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { MapPin, Briefcase, LineChart, BarChart3, Bot, Lightbulb, Github, Linkedin, Mail, Instagram, Code2, Wrench, Database, GraduationCap, Calendar } from "lucide-react";
+import { MapPin, Briefcase, LineChart, BarChart3, Bot, Lightbulb, Github, Linkedin, Mail, Instagram, Code2, Wrench, Database, GraduationCap, Calendar, Cloud, CloudDrizzle, CloudLightning, CloudRain, CloudSnow, Sun, CloudFog } from "lucide-react";
 import { PreviousRoles } from "@/components/previous-roles";
 import Link from "next/link";
 import { useEffect, useState } from "react"
-import { Weather } from "@/components/weather"
+
+type WeatherData = {
+  temp: number;
+  condition: string;
+  icon: string;
+  feels_like: number;
+};
 
 export default function Home() {
   const [localTime, setLocalTime] = useState<string>("")
   const [gmtTime, setGmtTime] = useState<string>("")
+  const [weather, setWeather] = useState<WeatherData | null>(null);
 
   useEffect(() => {
     const updateTime = () => {
@@ -39,6 +46,51 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [])
 
+  useEffect(() => {
+    const fetchWeather = async () => {
+      try {
+        const response = await fetch('/api/weather', {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+          }
+        });
+        if (!response.ok) throw new Error('Weather fetch failed');
+        const data = await response.json();
+        setWeather(data);
+      } catch (error) {
+        console.error('Failed to fetch weather:', error);
+      }
+    };
+
+    fetchWeather();
+    const interval = setInterval(fetchWeather, 120000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const getWeatherIcon = (condition: string) => {
+    switch (condition.toLowerCase()) {
+      case 'clear':
+        return <Sun className="w-4 h-4" />;
+      case 'clouds':
+        return <Cloud className="w-4 h-4" />;
+      case 'rain':
+        return <CloudRain className="w-4 h-4" />;
+      case 'drizzle':
+        return <CloudDrizzle className="w-4 h-4" />;
+      case 'thunderstorm':
+        return <CloudLightning className="w-4 h-4" />;
+      case 'snow':
+        return <CloudSnow className="w-4 h-4" />;
+      case 'mist':
+      case 'fog':
+        return <CloudFog className="w-4 h-4" />;
+      default:
+        return <Sun className="w-4 h-4" />;
+    }
+  };
+
   return (
     <main className="flex flex-col items-center px-4 py-14 bg-[#fdfff4] min-h-screen">
       <div className="w-full max-w-[568px]">
@@ -50,13 +102,26 @@ export default function Home() {
             </Link>
             <Link 
               href="/meet-neo"
+              // target="_blank"
               rel="noopener noreferrer"
               className="text-[14px] text-foreground/90 font-medium shimmer-text"
             >
               Meet Iva!
             </Link>
           </div>
-          <Weather />
+
+          {weather && (
+            <div className="flex items-center gap-2 text-muted-foreground/80">
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs">Hubli</span>
+                {getWeatherIcon(weather.condition)}
+                <div className="flex flex-col items-end">
+                  <span className="text-sm font-medium">{weather.temp}°C</span>
+                  <span className="text-[10px] opacity-80">Feels {weather.feels_like}°C</span>
+                </div>
+              </div>
+            </div>
+          )}
         </nav>
 
         <section className="flex flex-col gap-3 pt-1 animate-on-load delay-100">
