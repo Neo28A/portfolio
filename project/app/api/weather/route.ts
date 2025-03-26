@@ -1,41 +1,41 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
+
+export const revalidate = 0; // Prevent caching
 
 export async function GET() {
     try {
-        // Hubli coordinates
-        // const lat = "15.3647";
-        // const lon = "75.1240";
+        const lat = "12.9716"; // Bengaluru latitude
+        const lon = "77.5946"; // Bengaluru longitude
 
-        // Bengaluru coordinates
-        const lat = "12.9716";
-        const lon = "77.5946";
-        
+        if (!process.env.OPENWEATHER_API_KEY) {
+            throw new Error("Missing API key in environment variables");
+        }
+
         const response = await fetch(
             `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${process.env.OPENWEATHER_API_KEY}&t=${Date.now()}`,
             {
-                cache: 'no-store',
+                cache: "no-store",
                 headers: {
-                    'Cache-Control': 'no-cache',
-                    'Pragma': 'no-cache'
-                }
+                    "Cache-Control": "no-cache, no-store, must-revalidate",
+                    Pragma: "no-cache",
+                    Expires: "0",
+                },
             }
         );
 
         if (!response.ok) {
-            throw new Error('Failed to fetch weather data');
+            throw new Error("Failed to fetch weather data");
         }
 
         const data = await response.json();
+
         return NextResponse.json({
             temp: Math.round(data.main.temp),
-            condition: data.weather[0].main,
-            icon: data.weather[0].icon,
-            feels_like: Math.round(data.main.feels_like)
+            condition: data.weather[0].main, // e.g., "Clouds"
+            icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`, // Use correct OpenWeatherMap icon
         });
+
     } catch (error) {
-        return NextResponse.json(
-            { error: 'Failed to fetch weather data' },
-            { status: 500 }
-        );
+        return NextResponse.json({ error: error.message }, { status: 500 });
     }
-} 
+}

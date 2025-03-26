@@ -49,11 +49,12 @@ export default function Home() {
   useEffect(() => {
     const fetchWeather = async () => {
       try {
-        const response = await fetch('/api/weather', {
+        const response = await fetch('/api/weather?nocache=' + Date.now(), {
           cache: 'no-store',
           headers: {
-            'Cache-Control': 'no-cache',
-            'Pragma': 'no-cache'
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
           }
         });
         if (!response.ok) throw new Error('Weather fetch failed');
@@ -65,31 +66,25 @@ export default function Home() {
     };
 
     fetchWeather();
-    const interval = setInterval(fetchWeather, 120000);
+    const interval = setInterval(fetchWeather, 120000); // Refresh every 2 minutes
     return () => clearInterval(interval);
   }, []);
 
-  const getWeatherIcon = (condition: string) => {
-    switch (condition.toLowerCase()) {
-      case 'clear':
-        return <Sun className="w-4 h-4" />;
-      case 'clouds':
-        return <Cloud className="w-4 h-4" />;
-      case 'rain':
-        return <CloudRain className="w-4 h-4" />;
-      case 'drizzle':
-        return <CloudDrizzle className="w-4 h-4" />;
-      case 'thunderstorm':
-        return <CloudLightning className="w-4 h-4" />;
-      case 'snow':
-        return <CloudSnow className="w-4 h-4" />;
-      case 'mist':
-      case 'fog':
-        return <CloudFog className="w-4 h-4" />;
-      default:
-        return <Sun className="w-4 h-4" />;
-    }
+
+  const getWeatherIcon = (iconUrl: string) => {
+    return (
+      <img
+        src={iconUrl}
+        alt="Weather Icon"
+        className="w-8 h-8 filter invert"
+      />
+    );
   };
+
+
+
+
+
 
   return (
     <main className="flex flex-col items-center px-4 py-14 bg-[#fdfff4] min-h-screen">
@@ -97,15 +92,9 @@ export default function Home() {
         <nav className="flex items-center justify-between mb-12 animate-on-load">
           <div className="flex items-center gap-2">
             <Link href="/meet-neo" rel="noopener noreferrer">
-              <div className="w-[24px] h-[24px] rounded-full bg-gradient-to-br from-orange-400 to-orange-200 pulse-animation hover-spin shadow-lg hover:shadow-orange-400/50 relative before:absolute before:inset-0 before:rounded-full before:bg-orange-400/20 before:scale-[1.4] before:opacity-0 hover:before:scale-100 hover:before:opacity-100 before:transition-all before:duration-[2500ms] before:ease-out cursor-pointer">
-              </div>
+              <div className="w-[24px] h-[24px] rounded-full bg-gradient-to-br from-orange-400 to-orange-200 pulse-animation hover-spin shadow-lg hover:shadow-orange-400/50 relative before:absolute before:inset-0 before:rounded-full before:bg-orange-400/20 before:scale-[1.4] before:opacity-0 hover:before:scale-100 hover:before:opacity-100 before:transition-all before:duration-[2500ms] before:ease-out cursor-pointer"></div>
             </Link>
-            <Link 
-              href="/meet-neo"
-              // target="_blank"
-              rel="noopener noreferrer"
-              className="text-[14px] text-foreground/90 font-medium shimmer-text"
-            >
+            <Link href="/meet-neo" rel="noopener noreferrer" className="text-[14px] text-foreground/90 font-medium shimmer-text">
               Meet Iva!
             </Link>
           </div>
@@ -113,13 +102,13 @@ export default function Home() {
           {weather && (
             <div className="flex items-center gap-2 text-muted-foreground/80 group relative">
               <div className="flex items-center gap-1.5">
-                {/* {getWeatherIcon(weather.condition)} */}
+                {getWeatherIcon(weather.icon)}
                 <div className="flex flex-col items-end">
                   <span className="text-sm font-medium">{weather.temp}°C</span>
                 </div>
                 <span className="text-xs">Bengaluru</span>
               </div>
-              
+
               {/* Tooltip */}
               <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
                 <span className="text-[10px] text-muted-foreground/60 whitespace-nowrap">
