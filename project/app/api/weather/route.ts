@@ -32,10 +32,11 @@ export async function GET() {
         return NextResponse.json({
             temp: Math.round(data.main.temp),
             condition: data.weather[0].main, // e.g., "Clouds"
-            icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`, // Use correct OpenWeatherMap icon
+            icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`, // Dark mode-friendly icons
         });
 
     } catch (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+        const errMsg = error instanceof Error ? error.message : "Unknown error occurred";
+        return NextResponse.json({ error: errMsg }, { status: 500 });
     }
 }
