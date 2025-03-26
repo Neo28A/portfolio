@@ -1,18 +1,11 @@
 import { NextResponse } from "next/server";
 
-export const revalidate = 0; // Prevent caching
+export const revalidate = 0; // Prevent caching in Next.js
 
 export async function GET() {
     try {
-        const lat = "12.9716"; // Bengaluru latitude
-        const lon = "77.5946"; // Bengaluru longitude
-
-        if (!process.env.OPENWEATHER_API_KEY) {
-            throw new Error("Missing API key in environment variables");
-        }
-
         const response = await fetch(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${process.env.OPENWEATHER_API_KEY}&t=${Date.now()}`,
+            `https://api.weatherapi.com/v1/current.json?key=${process.env.WEATHER_API_KEY}&q=Bengaluru&aqi=no`,
             {
                 cache: "no-store",
                 headers: {
@@ -28,11 +21,10 @@ export async function GET() {
         }
 
         const data = await response.json();
-
         return NextResponse.json({
-            temp: Math.round(data.main.temp),
-            condition: data.weather[0].main, // e.g., "Clouds"
-            icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`, // Dark mode-friendly icons
+            temp: data.current.temp_c,
+            condition: data.current.condition.text,
+            icon: `https:${data.current.condition.icon}`, // Ensure icon URL is correct
         });
 
     } catch (error) {
