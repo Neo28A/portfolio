@@ -50,7 +50,11 @@ export default function Home() {
   useEffect(() => {
     const fetchWeather = async () => {
       try {
-        const response = await fetch('/api/weather');
+        const response = await fetch('/api/weather', {
+          cache: 'no-store',
+          next: { revalidate: 0 }
+        });
+        
         if (!response.ok) {
           throw new Error('Failed to fetch weather data');
         }
@@ -62,8 +66,8 @@ export default function Home() {
     };
 
     fetchWeather();
-    // Refresh weather data every 30 minutes
-    const weatherInterval = setInterval(fetchWeather, 30 * 60 * 1000);
+    // Refresh weather data every 5 minutes
+    const weatherInterval = setInterval(fetchWeather, 5 * 60 * 1000);
     return () => clearInterval(weatherInterval);
   }, []);
 
