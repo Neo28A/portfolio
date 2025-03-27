@@ -18,7 +18,7 @@ export function WorkItem({ title, href, description, year, target }: WorkItemPro
       href={href}
       target={target}
       rel={target === "_blank" ? "noopener noreferrer" : undefined}
-      className="group block p-3 rounded-lg hover:bg-secondary/30 transition-all duration-300 transform hover:scale-[1.02] origin-center"
+      className="group block p-3 rounded-lg hover:bg-secondary/30 transition-all duration-300"
     >
       <div className="flex items-start gap-2">
         <div className="space-y-1 w-full">

@@ -98,7 +98,7 @@ export default function Home() {
         <nav className="flex items-center justify-between mb-12 animate-on-load">
           <div className="flex items-center gap-2">
             <Link href="/meet-neo" rel="noopener noreferrer">
-              <div className="w-[24px] h-[24px] rounded-full bg-gradient-to-br from-orange-400 to-orange-200 pulse-animation hover-spin shadow-lg hover:shadow-orange-400/50 relative before:absolute before:inset-0 before:rounded-full before:bg-orange-400/20 before:scale-[1.4] before:opacity-0 hover:before:scale-100 hover:before:opacity-100 before:transition-all before:duration-[2500ms] before:ease-out cursor-pointer"></div>
+              <div className="w-[24px] h-[24px] rounded-full bg-gradient-to-br from-[#DA7756] to-[#DA7756]/60 pulse-animation hover-spin shadow-lg hover:shadow-[#DA7756]/50 relative before:absolute before:inset-0 before:rounded-full before:bg-[#DA7756]/20 before:scale-[1.4] before:opacity-0 hover:before:scale-100 hover:before:opacity-100 before:transition-all before:duration-[2500ms] before:ease-out cursor-pointer"></div>
             </Link>
             <Link href="/meet-neo" rel="noopener noreferrer" className="text-[14px] text-foreground/90 font-medium shimmer-text">
               Meet Iva!
@@ -126,22 +126,24 @@ export default function Home() {
           
 
         <section className="flex flex-col gap-3 pt-1 animate-on-load delay-100">
-          <h1 className="text-[40px] font-semibold tracking-[-1.8px] leading-[60px] mb-4">
-            <span className="bg-gradient-to-r from-primary to-primary/50 bg-clip-text text-transparent">
-              Chetan Kittali
-            </span>
+          <h1 className="text-[48px] font-extrabold tracking-tight leading-[60px] mb-7 relative">
+            <span className="absolute text-[#DA7756]/20 left-[4px] top-[4px] font-playfair tracking-wide">Chetan Kittali</span>
+            <span className="absolute text-[#DA7756]/40 left-[3px] top-[3px] font-playfair tracking-wide">Chetan Kittali</span>
+            <span className="absolute text-[#DA7756]/60 left-[2px] top-[2px] font-playfair tracking-wide">Chetan Kittali</span>
+            <span className="absolute text-[#DA7756]/80 left-[1px] top-[1px] font-playfair tracking-wide">Chetan Kittali</span>
+            <span className="relative z-10 text-[#DA7756] font-playfair tracking-wide">Chetan Kittali</span>
           </h1>
           
-          <div className="flex items-center gap-2 text-[14.9px] tracking-[-0.4px] font-bold text-emperor">
-            <span className="text-foreground">data scientist</span>
+          <div className="flex items-center gap-2 text-[14.9px] tracking-[-0.4px] font-medium text-emperor">
+            <span className="text-foreground">Data Scientist</span>
             <div className="w-1 h-1 rounded-full bg-foreground/70"></div>
-            <span className="text-foreground">analyst</span>
+            <span className="text-foreground">ML Engineer</span>
             <div className="w-1 h-1 rounded-full bg-foreground/70"></div>
-            <span className="text-foreground">researcher</span>
+            <span className="text-foreground">Researcher</span>
           </div>
           
-          <p className="text-[14px] leading-7 text-muted-foreground tracking-[-0.3px]">
-            Hi, I'm Chetan, I'm passionate about <span className="text-foreground/90 font-medium">data science</span> and <span className="text-foreground/90 font-medium">building intelligent system</span>. I enjoy exploring AI and <span className="text-foreground/90 font-medium">uncovering patterns in data</span>. Always looking for innovative ways to solve complex problems and learn something new along the way.
+          <p className="text-[14px] leading-7 text-muted-foreground/90 tracking-[-0.3px]">
+            Building intelligent systems that solve real-world problems. Specialized in <span className="text-foreground/90 font-medium border-b-2 border-[#DA7756]/70">machine learning</span>, <span className="text-foreground/90 font-medium border-b-2 border-[#DA7756]/70">data analysis</span>, and <span className="text-foreground/90 font-medium border-b-2 border-[#DA7756]/70">pattern recognition</span>. Currently focused on developing scalable AI solutions and exploring emerging technologies.
           </p>
           
           <div className="flex flex-wrap gap-2 mt-4">
@@ -153,8 +155,8 @@ export default function Home() {
               <span className="text-muted-foreground/80 group-hover:text-primary/90 transition-colors duration-200">
                 <Github size={16} />
               </span>
-              <span className="font-semibold text-muted-foreground/90 text-[13px] tracking-[-0.3px] leading-5 group-hover:text-primary/90 transition-colors duration-200">
-                github
+              <span className="font-medium text-muted-foreground/90 text-[13px] tracking-[-0.3px] leading-5 group-hover:text-primary/90 transition-colors duration-200">
+                GitHub
               </span>
             </a>
             <a href="https://www.linkedin.com/in/chetan-kittali-44b94928a/" 
@@ -165,8 +167,8 @@ export default function Home() {
               <span className="text-muted-foreground/80 group-hover:text-primary/90 transition-colors duration-200">
                 <Linkedin size={16} />
               </span>
-              <span className="font-semibold text-muted-foreground/90 text-[13px] tracking-[-0.3px] leading-5 group-hover:text-primary/90 transition-colors duration-200">
-                linkedin
+              <span className="font-medium text-muted-foreground/90 text-[13px] tracking-[-0.3px] leading-5 group-hover:text-primary/90 transition-colors duration-200">
+                LinkedIn
               </span>
             </a>
             <a href="https://x.com/ChetanKittali" 
@@ -189,8 +191,8 @@ export default function Home() {
                   <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
                 </svg>
               </span>
-              <span className="font-semibold text-muted-foreground/90 text-[13px] tracking-[-0.3px] leading-5 group-hover:text-primary/90 transition-colors duration-200">
-                x
+              <span className="font-medium text-muted-foreground/90 text-[13px] tracking-[-0.3px] leading-5 group-hover:text-primary/90 transition-colors duration-200">
+                X
               </span>
             </a>
             <a href="mailto:chetankittali7@gmail.com"
@@ -199,8 +201,8 @@ export default function Home() {
               <span className="text-muted-foreground/80 group-hover:text-primary/90 transition-colors duration-200">
                 <Mail size={16} />
               </span>
-              <span className="font-semibold text-muted-foreground/90 text-[13px] tracking-[-0.3px] leading-5 group-hover:text-primary/90 transition-colors duration-200">
-                email
+              <span className="font-medium text-muted-foreground/90 text-[13px] tracking-[-0.3px] leading-5 group-hover:text-primary/90 transition-colors duration-200">
+                Email
               </span>
             </a>
           </div>
@@ -230,29 +232,29 @@ export default function Home() {
         <div className="custom-separator my-3" />
         
         <section className="section-container animate-on-load delay-200">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground/90 mb-3">Experience</h2>
+          <h2 className="text-xs font-medium uppercase tracking-wider text-muted-foreground/90 mb-3">Experience</h2>
           <div className="relative mt-3">
-            <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-primary/50 to-primary/5"></div>
+            <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-muted-foreground/30 to-muted-foreground/5"></div>
             
             <div className="relative pl-6">
-              <div className="absolute left-[-3px] top-2 w-1.5 h-1.5 rounded-full bg-primary ring-2 ring-background"></div>
+              <div className="absolute left-[-3px] top-2 w-1.5 h-1.5 rounded-full bg-muted-foreground/50 ring-2 ring-background"></div>
               
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between gap-1">
-                  <h3 className="font-semibold text-sm text-primary">Data Science Intern</h3>
+                  <h3 className="font-medium text-sm text-foreground">Data Science Intern</h3>
                   <span className="text-[10px] font-medium text-muted-foreground/90 px-2 py-0.5 rounded-full bg-secondary/20">2025</span>
                 </div>
                 
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <div className="flex items-center justify-center w-5 h-5 rounded-md bg-secondary/30">
-                      <span className="text-[10px] font-semibold text-primary">H</span>
+                      <span className="text-[10px] font-medium text-foreground">H</span>
                     </div>
-                    <h4 className="text-xs font-semibold text-foreground/90">Haegl Technologies</h4>
+                    <h4 className="text-xs font-medium text-foreground/90">Haegl Technologies</h4>
                   </div>
                   <span className="text-[10px] font-medium text-muted-foreground/90">Hubli, India</span>
-            </div>
-            </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -262,24 +264,24 @@ export default function Home() {
         <div className="custom-separator my-3" />
         
         <section className="section-container animate-on-load delay-400">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-muted-foreground/90 mb-3">Recent Work</h2>
+          <h2 className="text-xs font-medium uppercase tracking-wider text-muted-foreground/90 mb-3">Recent Work</h2>
           <div className="space-y-0">
             <WorkItem
               title="DocAssist AI"
               href="https://docassist-ai.netlify.app/"
-              description="DocAssist is an AI-driven medical support system that helps doctors make informed treatment decisions by analyzing patient data"
+              description="AI-powered medical support system for treatment decision optimization through patient data analysis"
               target="_blank"
             />
             <WorkItem 
               title="E-Commerce Product Categorization" 
               href="https://github.com/Neo28A/Hackathon-Ecommerce-Product-Categorization1.git" 
-              description="Developed an model which helps to categorize products based on product description"
+              description="ML model for automated product categorization based on semantic description analysis"
               target="_blank"
             />
             <WorkItem 
               title="Healthcare Analytics" 
               href="#healthcare-analytics" 
-              description="Patient health metrics analysis and visualization"
+              description="Advanced analytics platform for patient health metrics visualization and insights"
             />
             <a 
               href="https://github.com/Neo28A" 
@@ -287,8 +289,8 @@ export default function Home() {
               rel="noopener noreferrer"
               className="group flex items-center justify-center p-2 rounded-lg hover:bg-secondary/30 transition-colors"
             >
-              <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground/90 group-hover:text-primary">
-                Enter Project Gallery
+              <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground/90 group-hover:text-primary">
+                View Project Gallery
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="14"

@@ -65,7 +65,7 @@ export default function MeetNeo() {
                 <nav className="flex items-center justify-between mb-12 animate-on-load">
                     <Link 
                         href="/"
-                        className="text-sm font-medium text-muted-foreground/90 hover:text-primary transition-colors"
+                        className="text-sm font-medium text-muted-foreground/90 hover:text-[#DA7756] transition-colors"
                     >
                         ← Back home
                     </Link>
@@ -74,37 +74,40 @@ export default function MeetNeo() {
                 <div className="flex flex-col items-center justify-center gap-8 animate-on-load delay-100">
                     <button 
                         onClick={connected ? stopConversation : startConversation}
-                        className="relative w-[160px] h-[160px] rounded-full bg-gradient-to-br from-orange-200 via-orange-400 to-white shadow-lg focus:outline-none"
+                        className="relative w-[160px] h-[160px] rounded-full bg-[#DA7756] shadow-lg focus:outline-none overflow-hidden"
                         aria-label={connected ? "Stop conversation" : "Start conversation"}
                     >
                         {/* Inner glow effect */}
-                        <div className="absolute inset-0 rounded-full bg-gradient-to-t from-transparent via-white/30 to-white/50 opacity-20"></div>
+                        <div className="absolute inset-0 rounded-full bg-gradient-to-t from-transparent via-white/20 to-white/30 opacity-30"></div>
                         
-                        {/* Dynamic wave animation when connected */}
+                        {/* Dynamic wave animation when connected and speaking */}
                         {connected && (
                             <>
-                                <div className="absolute inset-[10%] rounded-full">
-                                    <div className="absolute inset-0 animate-wave-slow opacity-30">
-                                        <div className="absolute inset-0 rounded-full bg-gradient-to-t from-orange-300 to-transparent"></div>
+                                <div className="absolute inset-0 rounded-full overflow-hidden">
+                                    <div className={`absolute inset-0 ${speaking ? 'animate-wave-slow' : ''}`}>
+                                        <div className="absolute inset-[-20%] rounded-full bg-[#DA7756]/70 blur-md"></div>
                                     </div>
-                                    <div className="absolute inset-0 animate-wave-medium opacity-20">
-                                        <div className="absolute inset-0 rounded-full bg-gradient-to-t from-orange-400 to-transparent"></div>
+                                    <div className={`absolute inset-0 ${speaking ? 'animate-wave-medium' : ''}`}>
+                                        <div className="absolute inset-[-10%] rounded-full bg-[#DA7756]/80 blur-sm"></div>
                                     </div>
-                                    <div className="absolute inset-0 animate-wave-fast opacity-10">
-                                        <div className="absolute inset-0 rounded-full bg-gradient-to-t from-orange-500 to-transparent"></div>
-                                    </div>
+                                    {/* Ripple effect when speaking */}
+                                    {speaking && (
+                                        <div className="absolute inset-0">
+                                            <div className="absolute inset-[-5%] animate-ping rounded-full bg-white/20 duration-1000"></div>
+                                        </div>
+                                    )}
                                 </div>
                             </>
                         )}
                         
                         {/* Pulse animation ring */}
-                        <div className={`absolute -inset-4 rounded-full bg-gradient-to-br from-orange-200/20 to-transparent ${speaking || userSpeaking ? 'animate-pulse' : ''}`}></div>
+                        <div className={`absolute -inset-4 rounded-full bg-gradient-to-br from-[#DA7756]/30 to-transparent ${speaking || userSpeaking ? 'animate-pulse' : ''}`}></div>
                         
                         {/* Live indicator */}
                         {connected && (
                             <div className="absolute top-2 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
                                 <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                                <span className="text-[10px] font-medium text-muted-foreground/80">LIVE</span>
+                                <span className="text-[10px] font-medium text-white/90">LIVE</span>
                             </div>
                         )}
 
@@ -118,7 +121,7 @@ export default function MeetNeo() {
                             {connected ? '' : 'Meet Iva "Intelligent Virtual Assistant", My personal AI assistant.'}
                         </p>
                         <p className="text-muted-foreground text-sm leading-relaxed max-w-[480px]">
-                            {connected ? 'Try asking: "What are Chetan\'s recent works?" or "How can I contact Chetan?"' : 'Click the orange dot to start or stop talking with me!'}
+                            {connected ? 'Try asking: "What are Chetan\'s recent works?" or "How can I contact Chetan?"' : 'Click the orb to start or stop talking with me!'}
                         </p>
                         
                     </div>

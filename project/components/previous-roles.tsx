@@ -34,20 +34,20 @@ export function PreviousRoles() {
         }`}
       >
         {/* Timeline line with gradient - pushed inside */}
-        <div className="absolute left-[-12px] top-0 bottom-0 w-[1px] bg-gradient-to-b from-primary/30 to-primary/5"></div>
+        <div className="absolute left-[-12px] top-0 bottom-0 w-[1px] bg-gradient-to-b from-muted-foreground/30 to-muted-foreground/5"></div>
         
         {/* Previous Role 1 */}
         <div className="relative">
-          <div className="absolute left-[-14px] top-1.5 w-[5px] h-[5px] rounded-full bg-primary/20 ring-[1px] ring-background"></div>
+          <div className="absolute left-[-14px] top-1.5 w-[5px] h-[5px] rounded-full bg-muted-foreground/20 ring-[1px] ring-background"></div>
           <div className="space-y-1">
             <div className="flex items-center justify-between gap-1">
-              <h3 className="font-semibold text-[11px] text-primary/90">ML Research Intern</h3>
+              <h3 className="font-semibold text-[11px] text-foreground/90">ML Research Intern</h3>
               <span className="text-[9px] text-muted-foreground/80 px-1.5 py-0.5 rounded-full bg-secondary/20">2024</span>
             </div>
             <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-1.5">
                 <div className="flex items-center justify-center w-4 h-4 rounded-md bg-secondary/20">
-                  <span className="text-[10px] font-medium text-primary/70">T</span>
+                  <span className="text-[10px] font-medium text-foreground/70">T</span>
                 </div>
                 <h4 className="text-[10px] text-muted-foreground">Compsoft Technologies</h4>
               </div>

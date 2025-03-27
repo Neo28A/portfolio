@@ -10,6 +10,7 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ['var(--font-magnetik)', 'sans-serif'],
+        playfair: ['var(--font-playfair)', 'serif'],
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
