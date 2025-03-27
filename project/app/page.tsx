@@ -11,55 +11,19 @@ import { MapPin, Briefcase, LineChart, BarChart3, Bot, Lightbulb, Github, Linked
 import { PreviousRoles } from "@/components/previous-roles";
 import Link from "next/link";
 import { useEffect, useState } from "react"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 type WeatherData = {
-  current: {
-    temp_c: number;
-    temp_f: number;
-    condition: string;
-    icon: string;
-    feelslike_c: number;
-    humidity: number;
-    wind_kph: number;
-    wind_dir: string;
-    pressure_mb: number;
-    precip_mm: number;
-    cloud: number;
-    uv: number;
-    last_updated: string;
-  };
-  location: {
-    name: string;
-    region: string;
-    country: string;
-    localtime: string;
-  };
-  forecast: Array<{
-    date: string;
-    max_temp_c: number;
-    min_temp_c: number;
-    condition: string;
-    icon: string;
-    sunrise: string;
-    sunset: string;
-    moonrise: string;
-    moonset: string;
-    moon_phase: string;
-  }>;
-  air_quality: {
-    co: number;
-    no2: number;
-    o3: number;
-    pm2_5: number;
-    pm10: number;
-  };
+  temp: number;
+  condition: string;
+  icon: string;
+  feels_like: number;
 };
 
 export default function Home() {
   const [localTime, setLocalTime] = useState<string>("")
   const [gmtTime, setGmtTime] = useState<string>("")
   const [weather, setWeather] = useState<WeatherData | null>(null);
-  const [isLoadingWeather, setIsLoadingWeather] = useState(true);
 
   useEffect(() => {
     const updateTime = () => {
@@ -85,70 +49,44 @@ export default function Home() {
 
   useEffect(() => {
     const fetchWeather = async () => {
-        try {
-            setIsLoadingWeather(true);
-            
-            const response = await fetch('/api/weather', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Cache-Control': 'no-cache, no-store, must-revalidate',
-                },
-            });
-
-            const text = await response.text();
-            let data;
-            try {
-                data = JSON.parse(text);
-            } catch (e) {
-                console.error('[Weather] Invalid JSON response:', text);
-                throw new Error('Invalid JSON response');
-            }
-
-            if (!response.ok || data.error) {
-                console.error('[Weather] API error:', {
-                    status: response.status,
-                    error: data.error,
-                    details: data.details
-                });
-                throw new Error(data.error || 'Failed to fetch weather');
-            }
-
-            // Validate the essential data
-            if (!data?.current?.temp_c) {
-                console.error('[Weather] Invalid data structure:', data);
-                throw new Error('Invalid weather data structure');
-            }
-
-            setWeather(data);
-        } catch (error) {
-            console.error('[Weather] Error:', error);
-            setWeather(null);
-        } finally {
-            setIsLoadingWeather(false);
+      try {
+        const response = await fetch('/api/weather');
+        if (!response.ok) {
+          throw new Error('Failed to fetch weather data');
         }
+        const data = await response.json();
+        setWeather(data);
+      } catch (error) {
+        console.error('Error fetching weather:', error);
+      }
     };
 
     fetchWeather();
-    const interval = setInterval(fetchWeather, 120000); // Refresh every 2 minutes
-    return () => clearInterval(interval);
+    // Refresh weather data every 30 minutes
+    const weatherInterval = setInterval(fetchWeather, 30 * 60 * 1000);
+    return () => clearInterval(weatherInterval);
   }, []);
 
-
-  const getWeatherIcon = (iconUrl: string) => {
-    return (
-      <img
-        src={iconUrl}
-        alt="Weather Icon"
-        className="w-8 h-8 filter invert"
-      />
-    );
+  // Helper function to get the appropriate weather icon
+  const getWeatherIcon = () => {
+    if (!weather || !weather.condition) return <CloudFog size={16} />;
+    
+    const condition = weather.condition.toLowerCase();
+    
+    if (condition.includes('sunny') || condition.includes('clear')) {
+      return <Sun size={16} />;
+    } else if (condition.includes('rain')) {
+      return <CloudRain size={16} />;
+    } else if (condition.includes('snow')) {
+      return <CloudSnow size={16} />;
+    } else if (condition.includes('thunder') || condition.includes('lightning')) {
+      return <CloudLightning size={16} />;
+    } else if (condition.includes('drizzle')) {
+      return <CloudDrizzle size={16} />;
+    } else {
+      return <Cloud size={16} />;
+    }
   };
-
-
-
-
-
 
   return (
     <main className="flex flex-col items-center px-4 py-14 bg-[#fdfff4] min-h-screen">
@@ -162,133 +100,39 @@ export default function Home() {
               Meet Iva!
             </Link>
           </div>
-
-          {isLoadingWeather ? (
-            <div className="flex items-center gap-2 text-muted-foreground/80">
-                <span className="text-sm">Loading weather...</span>
-            </div>
-          ) : weather ? (
-            <Dialog>
-              <DialogTrigger asChild>
-                <div className="flex items-center gap-2 text-muted-foreground/80 group relative cursor-pointer hover:text-foreground transition-colors">
-                  <div className="flex items-center gap-1.5">
-                    <img
-                      src={weather.current.icon}
-                      alt={weather.current.condition}
-                      className="w-8 h-8"
-                    />
-                    <div className="flex flex-col items-end">
-                      <span className="text-sm font-medium">{weather.current.temp_c}°C</span>
-                      <span className="text-[10px] text-muted-foreground">{weather.current.condition}</span>
-                    </div>
+          
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <div className={`group flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/30 backdrop-blur-sm border border-gray-100/30 transition-colors duration-200 hover:border-primary cursor-pointer ${weather ? 'animate-on-load' : ''}`}>
+                  <span className="text-muted-foreground/80 group-hover:text-primary/90 transition-colors duration-200">
+                    {getWeatherIcon()}
+                  </span>
+                  <div className="flex flex-col">
+                    <span className="font-semibold text-foreground/90 text-[13px] tracking-[-0.3px] leading-5 group-hover:text-primary/90 transition-colors duration-200">
+                      {weather ? `${weather.temp}°C` : '--°C'}
+                    </span>
+                    <span className="text-[10px] text-muted-foreground/80">
+                      {weather ? weather.condition : 'Hubli, India'}
+                    </span>
                   </div>
                 </div>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[500px]">
-                <div className="grid gap-6">
-                  {/* Location and Current Weather */}
-                  <div className="space-y-2">
-                    <h4 className="text-xl font-semibold">
-                      {weather.location.name}, {weather.location.country}
-                    </h4>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <img src={weather.current.icon} alt={weather.current.condition} className="w-16 h-16" />
-                        <div>
-                          <div className="text-3xl font-bold">{weather.current.temp_c}°C</div>
-                          <div className="text-sm text-muted-foreground">{weather.current.condition}</div>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-sm">Feels like {weather.current.feelslike_c}°C</div>
-                        <div className="text-xs text-muted-foreground">
-                          Updated: {new Date(weather.current.last_updated).toLocaleTimeString()}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Current Details */}
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Humidity</span>
-                        <span>{weather.current.humidity}%</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Wind</span>
-                        <span>{weather.current.wind_kph} km/h {weather.current.wind_dir}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Pressure</span>
-                        <span>{weather.current.pressure_mb} mb</span>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">UV Index</span>
-                        <span>{weather.current.uv}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Cloud Cover</span>
-                        <span>{weather.current.cloud}%</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Precipitation</span>
-                        <span>{weather.current.precip_mm} mm</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Forecast */}
-                  <div className="space-y-2">
-                    <h5 className="text-sm font-semibold">Forecast</h5>
-                    <div className="grid grid-cols-2 gap-4">
-                      {weather.forecast.map((day) => (
-                        <div key={day.date} className="flex items-center justify-between p-2 rounded-lg bg-secondary/50">
-                          <div className="flex items-center gap-2">
-                            <img src={day.icon} alt={day.condition} className="w-8 h-8" />
-                            <div className="text-xs">
-                              <div>{new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}</div>
-                              <div className="text-muted-foreground">{day.condition}</div>
-                            </div>
-                          </div>
-                          <div className="text-right text-xs">
-                            <div>{day.max_temp_c}°</div>
-                            <div className="text-muted-foreground">{day.min_temp_c}°</div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Air Quality */}
-                  <div className="space-y-2">
-                    <h5 className="text-sm font-semibold">Air Quality</h5>
-                    <div className="grid grid-cols-3 gap-2 text-xs">
-                      <div className="p-2 rounded-lg bg-secondary/50">
-                        <div className="text-muted-foreground">PM2.5</div>
-                        <div className="font-medium">{weather.air_quality.pm2_5.toFixed(1)}</div>
-                      </div>
-                      <div className="p-2 rounded-lg bg-secondary/50">
-                        <div className="text-muted-foreground">PM10</div>
-                        <div className="font-medium">{weather.air_quality.pm10.toFixed(1)}</div>
-                      </div>
-                      <div className="p-2 rounded-lg bg-secondary/50">
-                        <div className="text-muted-foreground">O₃</div>
-                        <div className="font-medium">{weather.air_quality.o3.toFixed(1)}</div>
-                      </div>
-                    </div>
-                  </div>
+              </TooltipTrigger>
+              <TooltipContent className="p-2 max-w-[200px]">
+                <div className="flex flex-col gap-1">
+                  <div className="font-medium text-xs">Hubli, India</div>
+                  {weather && (
+                    <>
+                      <div className="text-xs text-muted-foreground">Feels like: {weather.feels_like}°C</div>
+                      <div className="text-xs text-muted-foreground">{weather.condition}</div>
+                    </>
+                  )}
                 </div>
-              </DialogContent>
-            </Dialog>
-          ) : (
-            <div className="flex items-center gap-2 text-muted-foreground/80">
-                <span className="text-sm">Weather unavailable</span>
-            </div>
-          )}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </nav>
+          
 
         <section className="flex flex-col gap-3 pt-1 animate-on-load delay-100">
           <h1 className="text-[40px] font-semibold tracking-[-1.8px] leading-[60px] mb-4">
