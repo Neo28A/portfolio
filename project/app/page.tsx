@@ -14,16 +14,11 @@ import { useEffect, useState } from "react"
 
 type WeatherData = {
   temp: number;
-  feels_like: number;
   condition: string;
   icon: string;
+  feels_like: number;
   humidity: number;
   wind_kph: number;
-  wind_dir: string;
-  pressure_mb: number;
-  precip_mm: number;
-  cloud: number;
-  uv: number;
   last_updated: string;
 };
 
@@ -108,24 +103,52 @@ export default function Home() {
           </div>
 
           {weather && (
-            <div className="flex items-center gap-2 text-muted-foreground/80 group relative">
-              <div className="flex items-center gap-1.5">
-                {getWeatherIcon(weather.icon)}
-                <div className="flex flex-col items-end">
-                  <span className="text-sm font-medium">{weather.temp}°C</span>
+            <Dialog>
+              <DialogTrigger asChild>
+                <div className="flex items-center gap-2 text-muted-foreground/80 group relative cursor-pointer hover:text-foreground transition-colors">
+                  <div className="flex items-center gap-1.5">
+                    {getWeatherIcon(weather.icon)}
+                    <div className="flex flex-col items-end">
+                      <span className="text-sm font-medium">{weather.temp}°C</span>
+                    </div>
+                    <span className="text-xs">Bengaluru</span>
+                  </div>
                 </div>
-                <span className="text-[12px] text-muted-foreground/80">
-                  Bengaluru
-                </span>
-              </div>
-
-              {/* Tooltip */}
-              <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                <span className="text-[10px] text-muted-foreground/60 whitespace-nowrap">
-                  current weather
-                </span>
-              </div>
-            </div>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <div className="grid gap-4">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-lg font-semibold">Weather in Bengaluru</h4>
+                    <img src={weather.icon} alt={weather.condition} className="w-12 h-12" />
+                  </div>
+                  <div className="grid gap-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">Temperature</span>
+                      <span className="font-medium">{weather.temp}°C</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">Feels like</span>
+                      <span className="font-medium">{weather.feels_like}°C</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">Condition</span>
+                      <span className="font-medium">{weather.condition}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">Humidity</span>
+                      <span className="font-medium">{weather.humidity}%</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">Wind Speed</span>
+                      <span className="font-medium">{weather.wind_kph} km/h</span>
+                    </div>
+                    <div className="flex justify-between items-center text-xs text-muted-foreground mt-2">
+                      <span>Last updated: {new Date(weather.last_updated).toLocaleTimeString()}</span>
+                    </div>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
           )}
         </nav>
 
