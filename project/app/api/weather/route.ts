@@ -18,10 +18,10 @@ export async function GET() {
     const data = await response.json();
     
     return NextResponse.json({
-      temp: data.current.temp_c,
+      temp: Math.round(data.current.temp_c),
       condition: data.current.condition.text,
       icon: data.current.condition.icon,
-      feels_like: data.current.feelslike_c
+      feels_like: Math.round(data.current.feelslike_c)
     });
     
   } catch (error) {

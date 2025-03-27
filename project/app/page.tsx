@@ -104,31 +104,18 @@ export default function Home() {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className={`group flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/30 backdrop-blur-sm border border-gray-100/30 transition-colors duration-200 hover:border-primary cursor-pointer ${weather ? 'animate-on-load' : ''}`}>
-                  <span className="text-muted-foreground/80 group-hover:text-primary/90 transition-colors duration-200">
+                <div className="group flex items-center gap-1.5 px-2 py-1 rounded-full bg-white/20 backdrop-blur-sm border border-border/10 transition-colors duration-200 hover:bg-white/30 cursor-pointer">
+                  {/* <span className="text-muted-foreground/90">
                     {getWeatherIcon()}
+                  </span> */}
+                  <span className="text-[13px] font-medium text-muted-foreground/90">
+                    {weather ? `${weather.temp}°C Hubli` : '--°'}
                   </span>
-                  <div className="flex flex-col">
-                    <span className="font-semibold text-foreground/90 text-[13px] tracking-[-0.3px] leading-5 group-hover:text-primary/90 transition-colors duration-200">
-                      {weather ? `${weather.temp}°C` : '--°C'}
-                    </span>
-                    <span className="text-[10px] text-muted-foreground/80">
-                      {weather ? weather.condition : 'Hubli, India'}
-                    </span>
-                  </div>
                 </div>
               </TooltipTrigger>
-              <TooltipContent className="p-2 max-w-[200px]">
-                <div className="flex flex-col gap-1">
-                  <div className="font-medium text-xs">Hubli, India</div>
-                  {weather && (
-                    <>
-                      <div className="text-xs text-muted-foreground">Feels like: {weather.feels_like}°C</div>
-                      <div className="text-xs text-muted-foreground">{weather.condition}</div>
-                    </>
-                  )}
-                </div>
-              </TooltipContent>
+              {/* <TooltipContent side="bottom" className="px-2 py-1">
+                <span className="text-xs">{weather?.condition}</span>
+              </TooltipContent> */}
             </Tooltip>
           </TooltipProvider>
         </nav>
