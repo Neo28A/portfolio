@@ -7,7 +7,7 @@ import { CollapsibleSection } from "@/components/collapsible-section";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { MapPin, Briefcase, LineChart, BarChart3, Bot, Lightbulb, Github, Linkedin, Mail, Instagram, Code2, Wrench, Database, GraduationCap, Calendar, Cloud, CloudDrizzle, CloudLightning, CloudRain, CloudSnow, Sun, CloudFog, CloudOff, Moon, CloudMoon, CloudSun } from "lucide-react";
+import { MapPin, Briefcase, LineChart, BarChart3, Bot, Lightbulb, Github, Linkedin, Mail, Instagram, Code2, Wrench, Database, GraduationCap, Calendar, Cloud, CloudDrizzle, CloudLightning, CloudRain, CloudSnow, Sun, CloudFog } from "lucide-react";
 import { PreviousRoles } from "@/components/previous-roles";
 import Link from "next/link";
 import { useEffect, useState } from "react"
@@ -16,7 +16,6 @@ type WeatherData = {
   temp: number;
   feels_like: number;
   condition: string;
-  is_day: number;
   icon: string;
   humidity: number;
   wind_kph: number;
@@ -80,32 +79,16 @@ export default function Home() {
   }, []);
 
 
-  const getWeatherIcon = (condition: string, isDay: number) => {
-    // Map weather conditions to Lucide icons
-    const iconMap = {
-      // Day icons
-      'sunny': <Sun className="w-5 h-5 text-foreground" />,
-      'clear': isDay ? <Sun className="w-5 h-5 text-foreground" /> : <Moon className="w-5 h-5 text-foreground" />,
-      'partly cloudy': isDay ? <CloudSun className="w-5 h-5 text-foreground" /> : <CloudMoon className="w-5 h-5 text-foreground" />,
-      'cloudy': <Cloud className="w-5 h-5 text-foreground" />,
-      'overcast': <Cloud className="w-5 h-5 text-foreground" />,
-      'mist': <CloudFog className="w-5 h-5 text-foreground" />,
-      'fog': <CloudFog className="w-5 h-5 text-foreground" />,
-      'light rain': <CloudDrizzle className="w-5 h-5 text-foreground" />,
-      'moderate rain': <CloudRain className="w-5 h-5 text-foreground" />,
-      'heavy rain': <CloudRain className="w-5 h-5 text-foreground" />,
-      'light snow': <CloudSnow className="w-5 h-5 text-foreground" />,
-      'moderate snow': <CloudSnow className="w-5 h-5 text-foreground" />,
-      'heavy snow': <CloudSnow className="w-5 h-5 text-foreground" />,
-      'thunder': <CloudLightning className="w-5 h-5 text-foreground" />,
-      'thunderstorm': <CloudLightning className="w-5 h-5 text-foreground" />
-    };
-
-    // Convert condition to lowercase for case-insensitive matching
-    const conditionLower = condition.toLowerCase();
-    // Return matching icon or default cloud icon
-    return (iconMap as Record<string, JSX.Element>)[conditionLower] || <CloudOff className="w-5 h-5 text-foreground" />;
+  const getWeatherIcon = (iconUrl: string) => {
+    return (
+      <img
+        src={iconUrl}
+        alt="Weather Icon"
+        className="w-8 h-8 filter invert"
+      />
+    );
   };
+
 
 
 
@@ -127,7 +110,7 @@ export default function Home() {
           {weather && (
             <div className="flex items-center gap-2 text-muted-foreground/80 group relative">
               <div className="flex items-center gap-1.5">
-                {getWeatherIcon(weather.condition, weather.is_day)}
+                {getWeatherIcon(weather.icon)}
                 <div className="flex flex-col items-end">
                   <span className="text-sm font-medium">{weather.temp}°C</span>
                 </div>

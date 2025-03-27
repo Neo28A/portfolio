@@ -28,7 +28,6 @@ export async function GET() {
             temp: data.current.temp_c,
             feels_like: data.current.feelslike_c,
             condition: data.current.condition.text,
-            is_day: data.current.is_day,
             icon: `https:${data.current.condition.icon}`,
             humidity: data.current.humidity,
             wind_kph: data.current.wind_kph,
