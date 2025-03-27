@@ -7,22 +7,32 @@ import { CollapsibleSection } from "@/components/collapsible-section";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { MapPin, Briefcase, LineChart, BarChart3, Bot, Lightbulb, Github, Linkedin, Mail, Instagram, Code2, Wrench, Database, GraduationCap, Calendar, Cloud, CloudDrizzle, CloudLightning, CloudRain, CloudSnow, Sun, CloudFog } from "lucide-react";
+import { MapPin, Briefcase, LineChart, BarChart3, Bot, Lightbulb, Github, Linkedin, Mail, Instagram, Code2, Wrench, Database, GraduationCap, Calendar, Cloud, CloudDrizzle, CloudLightning, CloudRain, CloudSnow, Sun, CloudFog, CloudOff, Moon, CloudMoon, CloudSun } from "lucide-react";
 import { PreviousRoles } from "@/components/previous-roles";
 import Link from "next/link";
 import { useEffect, useState } from "react"
 
 type WeatherData = {
   temp: number;
-  condition: string;
-  icon: string;
   feels_like: number;
+  condition: string;
+  is_day: number;
+  icon: string;
+  humidity: number;
+  wind_kph: number;
+  wind_dir: string;
+  pressure_mb: number;
+  precip_mm: number;
+  cloud: number;
+  uv: number;
+  last_updated: string;
 };
 
 export default function Home() {
   const [localTime, setLocalTime] = useState<string>("")
   const [gmtTime, setGmtTime] = useState<string>("")
   const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const updateTime = () => {
@@ -49,6 +59,7 @@ export default function Home() {
   useEffect(() => {
     const fetchWeather = async () => {
       try {
+        setIsLoading(true);
         const response = await fetch('/api/weather?nocache=' + Date.now(), {
           cache: 'no-store',
           headers: {
@@ -59,28 +70,51 @@ export default function Home() {
         });
         if (!response.ok) throw new Error('Weather fetch failed');
         const data = await response.json();
-        setWeather(data);
+        setWeather({
+          ...data,
+          temp: Math.round(data.temp), // Round temperature to whole number
+          feels_like: Math.round(data.feels_like) // Round feels like temperature
+        });
       } catch (error) {
         console.error('Failed to fetch weather:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchWeather();
-    const interval = setInterval(fetchWeather, 120000); // Refresh every 2 minutes
+    // Update weather every 30 seconds instead of 2 minutes for more real-time updates
+    const interval = setInterval(fetchWeather, 30000);
     return () => clearInterval(interval);
   }, []);
 
 
-  const getWeatherIcon = (iconUrl: string) => {
-    return (
-      <img
-        src={iconUrl}
-        alt="Weather Icon"
-        className="w-8 h-8 filter invert"
-      />
-    );
-  };
+  const getWeatherIcon = (condition: string, isDay: number) => {
+    // Map weather conditions to Lucide icons
+    const iconMap = {
+      // Day icons
+      'sunny': <Sun className="w-5 h-5 text-foreground" />,
+      'clear': isDay ? <Sun className="w-5 h-5 text-foreground" /> : <Moon className="w-5 h-5 text-foreground" />,
+      'partly cloudy': isDay ? <CloudSun className="w-5 h-5 text-foreground" /> : <CloudMoon className="w-5 h-5 text-foreground" />,
+      'cloudy': <Cloud className="w-5 h-5 text-foreground" />,
+      'overcast': <Cloud className="w-5 h-5 text-foreground" />,
+      'mist': <CloudFog className="w-5 h-5 text-foreground" />,
+      'fog': <CloudFog className="w-5 h-5 text-foreground" />,
+      'light rain': <CloudDrizzle className="w-5 h-5 text-foreground" />,
+      'moderate rain': <CloudRain className="w-5 h-5 text-foreground" />,
+      'heavy rain': <CloudRain className="w-5 h-5 text-foreground" />,
+      'light snow': <CloudSnow className="w-5 h-5 text-foreground" />,
+      'moderate snow': <CloudSnow className="w-5 h-5 text-foreground" />,
+      'heavy snow': <CloudSnow className="w-5 h-5 text-foreground" />,
+      'thunder': <CloudLightning className="w-5 h-5 text-foreground" />,
+      'thunderstorm': <CloudLightning className="w-5 h-5 text-foreground" />
+    };
 
+    // Convert condition to lowercase for case-insensitive matching
+    const conditionLower = condition.toLowerCase();
+    // Return matching icon or default cloud icon
+    return (iconMap as Record<string, JSX.Element>)[conditionLower] || <CloudOff className="w-5 h-5 text-foreground" />;
+  };
 
 
 
@@ -99,24 +133,41 @@ export default function Home() {
             </Link>
           </div>
 
-          {weather && (
-            <div className="flex items-center gap-2 text-muted-foreground/80 group relative">
-              <div className="flex items-center gap-1.5">
-                {getWeatherIcon(weather.icon)}
-                <div className="flex flex-col items-end">
-                  <span className="text-sm font-medium">{weather.temp}°C</span>
+          <div className="flex items-center gap-2 text-muted-foreground/80 group relative">
+            <div className="flex items-center gap-1.5">
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 rounded-full border-2 border-foreground/20 border-t-foreground/80 animate-spin"></div>
+                  <span className="text-[12px] text-muted-foreground/60">
+                    updating...
+                  </span>
                 </div>
-                <span className="text-xs">Bengaluru</span>
-              </div>
+              ) : weather ? (
+                <>
+                  {getWeatherIcon(weather.condition, weather.is_day)}
+                  <div className="flex items-center gap-1">
+                    <span className="text-sm font-medium">{weather.temp}°C</span>
+                    <span className="text-[12px] text-muted-foreground/80">
+                      Bengaluru
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <span className="text-[12px] text-muted-foreground/60">
+                  Weather unavailable
+                </span>
+              )}
+            </div>
 
-              {/* Tooltip */}
+            {/* Tooltip */}
+            {weather && (
               <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
                 <span className="text-[10px] text-muted-foreground/60 whitespace-nowrap">
-                  current weather
+                  {weather.condition}
                 </span>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </nav>
 
         <section className="flex flex-col gap-3 pt-1 animate-on-load delay-100">
