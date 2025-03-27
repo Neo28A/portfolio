@@ -3,39 +3,56 @@ import { NextResponse } from "next/server";
 export const revalidate = 0; // Prevent caching in Next.js
 
 export async function GET() {
-    // Log to verify the API key is available
-    if (!process.env.WEATHER_API_KEY) {
-        console.error("Weather API key is missing");
+    // Add more detailed logging for production debugging
+    const apiKey = process.env.WEATHER_API_KEY;
+    
+    if (!apiKey) {
+        console.error("[Weather API] API key is missing in environment variables");
         return NextResponse.json(
-            { error: "Weather API key not configured" },
+            { error: "Configuration error", details: "API key not found" },
             { status: 500 }
         );
     }
 
     try {
-        const url = `https://api.weatherapi.com/v1/forecast.json?key=${process.env.WEATHER_API_KEY}&q=Bengaluru&days=2&aqi=yes`;
-        console.log("Fetching weather from:", url.replace(process.env.WEATHER_API_KEY!, 'HIDDEN_KEY'));
+        const url = `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=Bengaluru&days=2&aqi=yes`;
+        
+        // Log the request (without exposing the API key)
+        console.log("[Weather API] Requesting weather data for Bengaluru");
 
         const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
-            next: { revalidate: 0 }
+            cache: 'no-store'
         });
+
+        // Log the response status
+        console.log(`[Weather API] Response status: ${response.status}`);
 
         if (!response.ok) {
             const errorText = await response.text();
-            console.error("Weather API error response:", errorText);
-            throw new Error(`Weather API failed with status ${response.status}`);
+            console.error("[Weather API] Error response:", errorText);
+            return NextResponse.json(
+                { 
+                    error: "API request failed", 
+                    status: response.status,
+                    details: errorText
+                },
+                { status: response.status }
+            );
         }
 
         const data = await response.json();
 
-        // Validate the required fields exist
+        // Validate the response data
         if (!data.current || !data.location || !data.forecast) {
-            console.error("Invalid weather data structure:", data);
-            throw new Error("Invalid weather data received");
+            console.error("[Weather API] Invalid data structure:", JSON.stringify(data));
+            return NextResponse.json(
+                { error: "Invalid data", details: "Missing required fields" },
+                { status: 500 }
+            );
         }
 
         const weatherData = {
@@ -81,12 +98,16 @@ export async function GET() {
             },
         };
 
+        console.log("[Weather API] Successfully fetched weather data");
         return NextResponse.json(weatherData);
 
     } catch (error) {
-        console.error('Weather API Error:', error);
+        console.error('[Weather API] Error:', error);
         return NextResponse.json(
-            { error: error instanceof Error ? error.message : "Failed to fetch weather data" },
+            { 
+                error: "Server error",
+                details: error instanceof Error ? error.message : "Unknown error occurred"
+            },
             { status: 500 }
         );
     }

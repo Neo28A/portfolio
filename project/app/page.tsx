@@ -87,31 +87,28 @@ export default function Home() {
     const fetchWeather = async () => {
         try {
             setIsLoadingWeather(true);
-            console.log('Fetching weather data...');
+            console.log('[Weather] Fetching weather data...');
+            
             const response = await fetch('/api/weather', {
-                next: { revalidate: 0 },
+                cache: 'no-store',
                 headers: {
-                    'Cache-Control': 'no-cache',
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
                 }
             });
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                console.error('Weather API error:', errorText);
-                throw new Error('Weather fetch failed');
-            }
-
             const data = await response.json();
-            
-            if (data.error) {
-                console.error('Weather API returned error:', data.error);
+
+            if (!response.ok || data.error) {
+                console.error('[Weather] API error:', data.error, data.details);
+                setWeather(null);
                 return;
             }
 
-            console.log('Weather data received:', data);
+            console.log('[Weather] Data received successfully');
             setWeather(data);
         } catch (error) {
-            console.error('Failed to fetch weather:', error);
+            console.error('[Weather] Fetch error:', error);
+            setWeather(null);
         } finally {
             setIsLoadingWeather(false);
         }
