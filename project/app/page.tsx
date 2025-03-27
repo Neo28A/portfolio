@@ -59,6 +59,7 @@ export default function Home() {
   const [localTime, setLocalTime] = useState<string>("")
   const [gmtTime, setGmtTime] = useState<string>("")
   const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [isLoadingWeather, setIsLoadingWeather] = useState(true);
 
   useEffect(() => {
     const updateTime = () => {
@@ -84,21 +85,36 @@ export default function Home() {
 
   useEffect(() => {
     const fetchWeather = async () => {
-      try {
-        const response = await fetch('/api/weather?nocache=' + Date.now(), {
-          cache: 'no-store',
-          headers: {
-            'Cache-Control': 'no-cache, no-store, must-revalidate',
-            'Pragma': 'no-cache',
-            'Expires': '0'
-          }
-        });
-        if (!response.ok) throw new Error('Weather fetch failed');
-        const data = await response.json();
-        setWeather(data);
-      } catch (error) {
-        console.error('Failed to fetch weather:', error);
-      }
+        try {
+            setIsLoadingWeather(true);
+            console.log('Fetching weather data...');
+            const response = await fetch('/api/weather', {
+                next: { revalidate: 0 },
+                headers: {
+                    'Cache-Control': 'no-cache',
+                }
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Weather API error:', errorText);
+                throw new Error('Weather fetch failed');
+            }
+
+            const data = await response.json();
+            
+            if (data.error) {
+                console.error('Weather API returned error:', data.error);
+                return;
+            }
+
+            console.log('Weather data received:', data);
+            setWeather(data);
+        } catch (error) {
+            console.error('Failed to fetch weather:', error);
+        } finally {
+            setIsLoadingWeather(false);
+        }
     };
 
     fetchWeather();
@@ -135,7 +151,11 @@ export default function Home() {
             </Link>
           </div>
 
-          {weather && (
+          {isLoadingWeather ? (
+            <div className="flex items-center gap-2 text-muted-foreground/80">
+                <span className="text-sm">Loading weather...</span>
+            </div>
+          ) : weather ? (
             <Dialog>
               <DialogTrigger asChild>
                 <div className="flex items-center gap-2 text-muted-foreground/80 group relative cursor-pointer hover:text-foreground transition-colors">
@@ -251,6 +271,10 @@ export default function Home() {
                 </div>
               </DialogContent>
             </Dialog>
+          ) : (
+            <div className="flex items-center gap-2 text-muted-foreground/80">
+                <span className="text-sm">Weather unavailable</span>
+            </div>
           )}
         </nav>
 
