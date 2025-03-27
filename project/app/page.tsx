@@ -87,27 +87,42 @@ export default function Home() {
     const fetchWeather = async () => {
         try {
             setIsLoadingWeather(true);
-            console.log('[Weather] Fetching weather data...');
             
             const response = await fetch('/api/weather', {
-                cache: 'no-store',
+                method: 'GET',
                 headers: {
+                    'Content-Type': 'application/json',
                     'Cache-Control': 'no-cache, no-store, must-revalidate',
-                }
+                },
             });
 
-            const data = await response.json();
-
-            if (!response.ok || data.error) {
-                console.error('[Weather] API error:', data.error, data.details);
-                setWeather(null);
-                return;
+            const text = await response.text();
+            let data;
+            try {
+                data = JSON.parse(text);
+            } catch (e) {
+                console.error('[Weather] Invalid JSON response:', text);
+                throw new Error('Invalid JSON response');
             }
 
-            console.log('[Weather] Data received successfully');
+            if (!response.ok || data.error) {
+                console.error('[Weather] API error:', {
+                    status: response.status,
+                    error: data.error,
+                    details: data.details
+                });
+                throw new Error(data.error || 'Failed to fetch weather');
+            }
+
+            // Validate the essential data
+            if (!data?.current?.temp_c) {
+                console.error('[Weather] Invalid data structure:', data);
+                throw new Error('Invalid weather data structure');
+            }
+
             setWeather(data);
         } catch (error) {
-            console.error('[Weather] Fetch error:', error);
+            console.error('[Weather] Error:', error);
             setWeather(null);
         } finally {
             setIsLoadingWeather(false);
