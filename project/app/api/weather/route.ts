@@ -4,38 +4,26 @@ export const revalidate = 0; // Prevent caching in Next.js
 
 export async function GET() {
     try {
-        const apiKey = process.env.WEATHER_API_KEY;
-        
-        // Debug: Check if API key exists
-        if (!apiKey) {
-            console.error('Weather API key is missing');
-            throw new Error('Weather API key is not configured');
-        }
-
+        // Enhanced API call with more parameters
         const response = await fetch(
-            `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=Bengaluru&aqi=yes`,
+            `https://api.weatherapi.com/v1/current.json?key=${process.env.WEATHER_API_KEY}&q=Bengaluru&aqi=yes`,
             {
-                method: 'GET',
+                cache: "no-store",
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Cache-Control": "no-cache, no-store, must-revalidate",
+                    Pragma: "no-cache",
+                    Expires: "0",
                 },
-                next: { revalidate: 0 }
             }
         );
 
         if (!response.ok) {
-            throw new Error(`Weather API failed: ${response.statusText}`);
+            throw new Error("Failed to fetch weather data");
         }
 
         const data = await response.json();
         
-        if (!data || !data.current) {
-            throw new Error('Invalid weather data received');
-        }
-
-        // Debug: Log successful response
-        console.log('Weather data fetched successfully');
-        
+        // Return enhanced weather data
         return NextResponse.json({
             temp: data.current.temp_c,
             feels_like: data.current.feelslike_c,
@@ -53,15 +41,7 @@ export async function GET() {
         });
 
     } catch (error) {
-        // Enhanced error logging
-        console.error('Weather API error:', error);
         const errMsg = error instanceof Error ? error.message : "Unknown error occurred";
-        return new NextResponse(
-            JSON.stringify({ error: 'Failed to fetch weather data' }), 
-            { 
-                status: 500,
-                headers: { 'Content-Type': 'application/json' }
-            }
-        );
+        return NextResponse.json({ error: errMsg }, { status: 500 });
     }
 }

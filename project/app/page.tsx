@@ -32,7 +32,6 @@ export default function Home() {
   const [localTime, setLocalTime] = useState<string>("")
   const [gmtTime, setGmtTime] = useState<string>("")
   const [weather, setWeather] = useState<WeatherData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const updateTime = () => {
@@ -58,49 +57,25 @@ export default function Home() {
 
   useEffect(() => {
     const fetchWeather = async () => {
-        try {
-            setIsLoading(true);
-            const response = await fetch('/api/weather', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            
-            if (!response.ok) {
-                throw new Error('Failed to fetch weather data');
-            }
-            
-            const data = await response.json();
-            
-            if (data.error) {
-                throw new Error(data.error);
-            }
-            
-            if (!data.temp || !data.condition) {
-                throw new Error('Invalid weather data');
-            }
-
-            setWeather({
-                ...data,
-                temp: Math.round(data.temp)
-            });
-            
-        } catch (error) {
-            console.error('Weather fetch error:', error);
-            setWeather(null);
-        } finally {
-            setIsLoading(false);
-        }
+      try {
+        const response = await fetch('/api/weather?nocache=' + Date.now(), {
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        });
+        if (!response.ok) throw new Error('Weather fetch failed');
+        const data = await response.json();
+        setWeather(data);
+      } catch (error) {
+        console.error('Failed to fetch weather:', error);
+      }
     };
 
-    // Initial fetch
     fetchWeather();
-
-    // Set up polling interval
-    const interval = setInterval(fetchWeather, 30000);
-
-    // Cleanup
+    const interval = setInterval(fetchWeather, 120000); // Refresh every 2 minutes
     return () => clearInterval(interval);
   }, []);
 
@@ -149,40 +124,26 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="flex items-center gap-2 text-muted-foreground/80 group relative">
-            <div className="flex items-center gap-1.5">
-                {isLoading ? (
-                    <div className="flex items-center gap-2">
-                        <div className="w-5 h-5 rounded-full border-2 border-foreground/20 border-t-foreground/80 animate-spin"></div>
-                    </div>
-                ) : weather && weather.condition ? (
-                    <>
-                        {getWeatherIcon(weather.condition, weather.is_day)}
-                        <div className="flex items-center gap-1">
-                            <span className="text-sm font-medium">{weather.temp}°C</span>
-                            <span className="text-[12px] text-muted-foreground/80">
-                                Bengaluru
-                            </span>
-                        </div>
-                    </>
-                ) : (
-                    <div className="flex items-center gap-1">
-                        <CloudOff className="w-5 h-5 text-muted-foreground/60" />
-                        <span className="text-[12px] text-muted-foreground/60">
-                            Weather unavailable
-                        </span>
-                    </div>
-                )}
-            </div>
-
-            {weather && weather.condition && (
-                <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                    <span className="text-[10px] text-muted-foreground/60 whitespace-nowrap">
-                        {weather.condition}
-                    </span>
+          {weather && (
+            <div className="flex items-center gap-2 text-muted-foreground/80 group relative">
+              <div className="flex items-center gap-1.5">
+                {getWeatherIcon(weather.condition, weather.is_day)}
+                <div className="flex flex-col items-end">
+                  <span className="text-sm font-medium">{weather.temp}°C</span>
                 </div>
-            )}
-          </div>
+                <span className="text-[12px] text-muted-foreground/80">
+                  Bengaluru
+                </span>
+              </div>
+
+              {/* Tooltip */}
+              <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                <span className="text-[10px] text-muted-foreground/60 whitespace-nowrap">
+                  current weather
+                </span>
+              </div>
+            </div>
+          )}
         </nav>
 
         <section className="flex flex-col gap-3 pt-1 animate-on-load delay-100">
