@@ -57,54 +57,50 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    let retryCount = 0;
-    const maxRetries = 3;
-
     const fetchWeather = async () => {
         try {
             setIsLoading(true);
-            const response = await fetch('/api/weather?t=' + Date.now(), {
+            const response = await fetch('/api/weather', {
+                method: 'GET',
                 headers: {
-                    'Cache-Control': 'no-cache',
-                    'Pragma': 'no-cache'
+                    'Content-Type': 'application/json'
                 }
             });
             
-            const data = await response.json();
-
-            // Log the response for debugging
-            console.log('[Weather Client] Response:', { status: response.status, data });
+            if (!response.ok) {
+                throw new Error('Failed to fetch weather data');
+            }
             
-            if (!response.ok || data.error) {
-                console.error('[Weather Client] Error:', data.error || 'Failed to fetch weather');
-                throw new Error(data.error || 'Failed to fetch weather');
+            const data = await response.json();
+            
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            
+            if (!data.temp || !data.condition) {
+                throw new Error('Invalid weather data');
             }
 
             setWeather({
                 ...data,
-                temp: Math.round(data.temp),
-                feels_like: Math.round(data.feels_like)
+                temp: Math.round(data.temp)
             });
-            retryCount = 0; // Reset retry count on success
             
         } catch (error) {
-            console.error('[Weather Client] Fetch error:', error);
-            
-            // Implement retry logic
-            if (retryCount < maxRetries) {
-                retryCount++;
-                console.log(`[Weather Client] Retrying... (${retryCount}/${maxRetries})`);
-                setTimeout(fetchWeather, 2000 * retryCount); // Exponential backoff
-            } else {
-                setWeather(null);
-            }
+            console.error('Weather fetch error:', error);
+            setWeather(null);
         } finally {
             setIsLoading(false);
         }
     };
 
+    // Initial fetch
     fetchWeather();
+
+    // Set up polling interval
     const interval = setInterval(fetchWeather, 30000);
+
+    // Cleanup
     return () => clearInterval(interval);
   }, []);
 
@@ -155,37 +151,36 @@ export default function Home() {
 
           <div className="flex items-center gap-2 text-muted-foreground/80 group relative">
             <div className="flex items-center gap-1.5">
-              {isLoading ? (
-                <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 rounded-full border-2 border-foreground/20 border-t-foreground/80 animate-spin"></div>
-                  <span className="text-[12px] text-muted-foreground/60">
-                    updating...
-                  </span>
-                </div>
-              ) : weather ? (
-                <>
-                  {getWeatherIcon(weather.condition, weather.is_day)}
-                  <div className="flex items-center gap-1">
-                    <span className="text-sm font-medium">{weather.temp}°C</span>
-                    <span className="text-[12px] text-muted-foreground/80">
-                      Bengaluru
-                    </span>
-                  </div>
-                </>
-              ) : (
-                <span className="text-[12px] text-muted-foreground/60">
-                  Weather unavailable
-                </span>
-              )}
+                {isLoading ? (
+                    <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 rounded-full border-2 border-foreground/20 border-t-foreground/80 animate-spin"></div>
+                    </div>
+                ) : weather && weather.condition ? (
+                    <>
+                        {getWeatherIcon(weather.condition, weather.is_day)}
+                        <div className="flex items-center gap-1">
+                            <span className="text-sm font-medium">{weather.temp}°C</span>
+                            <span className="text-[12px] text-muted-foreground/80">
+                                Bengaluru
+                            </span>
+                        </div>
+                    </>
+                ) : (
+                    <div className="flex items-center gap-1">
+                        <CloudOff className="w-5 h-5 text-muted-foreground/60" />
+                        <span className="text-[12px] text-muted-foreground/60">
+                            Weather unavailable
+                        </span>
+                    </div>
+                )}
             </div>
 
-            {/* Tooltip */}
-            {weather && (
-              <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                <span className="text-[10px] text-muted-foreground/60 whitespace-nowrap">
-                  {weather.condition}
-                </span>
-              </div>
+            {weather && weather.condition && (
+                <div className="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                    <span className="text-[10px] text-muted-foreground/60 whitespace-nowrap">
+                        {weather.condition}
+                    </span>
+                </div>
             )}
           </div>
         </nav>
