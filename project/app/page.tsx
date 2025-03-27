@@ -58,32 +58,45 @@ export default function Home() {
 
   useEffect(() => {
     const fetchWeather = async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetch('/api/weather?nocache=' + Date.now(), {
-          cache: 'no-store',
-          headers: {
-            'Cache-Control': 'no-cache, no-store, must-revalidate',
-            'Pragma': 'no-cache',
-            'Expires': '0'
-          }
-        });
-        if (!response.ok) throw new Error('Weather fetch failed');
-        const data = await response.json();
-        setWeather({
-          ...data,
-          temp: Math.round(data.temp), // Round temperature to whole number
-          feels_like: Math.round(data.feels_like) // Round feels like temperature
-        });
-      } catch (error) {
-        console.error('Failed to fetch weather:', error);
-      } finally {
-        setIsLoading(false);
-      }
+        try {
+            setIsLoading(true);
+            const response = await fetch('/api/weather?nocache=' + Date.now(), {
+                cache: 'no-store',
+                headers: {
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache',
+                    'Expires': '0'
+                }
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Weather fetch failed:', errorData);
+                throw new Error('Weather fetch failed');
+            }
+            
+            const data = await response.json();
+            
+            if (data.error) {
+                console.error('Weather API error:', data.error);
+                throw new Error(data.error);
+            }
+            
+            setWeather({
+                ...data,
+                temp: Math.round(data.temp),
+                feels_like: Math.round(data.feels_like)
+            });
+            
+        } catch (error) {
+            console.error('Failed to fetch weather:', error);
+            setWeather(null);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     fetchWeather();
-    // Update weather every 30 seconds instead of 2 minutes for more real-time updates
     const interval = setInterval(fetchWeather, 30000);
     return () => clearInterval(interval);
   }, []);

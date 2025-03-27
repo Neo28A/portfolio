@@ -4,9 +4,16 @@ export const revalidate = 0; // Prevent caching in Next.js
 
 export async function GET() {
     try {
-        // Enhanced API call with more parameters
+        const apiKey = process.env.WEATHER_API_KEY;
+        
+        // Debug: Check if API key exists
+        if (!apiKey) {
+            console.error('Weather API key is missing');
+            throw new Error('Weather API key is not configured');
+        }
+
         const response = await fetch(
-            `https://api.weatherapi.com/v1/current.json?key=${process.env.WEATHER_API_KEY}&q=Bengaluru&aqi=yes`,
+            `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=Bengaluru&aqi=yes`,
             {
                 cache: "no-store",
                 headers: {
@@ -18,12 +25,16 @@ export async function GET() {
         );
 
         if (!response.ok) {
-            throw new Error("Failed to fetch weather data");
+            const errorData = await response.json();
+            console.error('Weather API error:', errorData);
+            throw new Error(`Weather API failed: ${response.statusText}`);
         }
 
         const data = await response.json();
         
-        // Return enhanced weather data
+        // Debug: Log successful response
+        console.log('Weather data fetched successfully');
+        
         return NextResponse.json({
             temp: data.current.temp_c,
             feels_like: data.current.feelslike_c,
@@ -41,6 +52,8 @@ export async function GET() {
         });
 
     } catch (error) {
+        // Enhanced error logging
+        console.error('Weather API error:', error);
         const errMsg = error instanceof Error ? error.message : "Unknown error occurred";
         return NextResponse.json({ error: errMsg }, { status: 500 });
     }
