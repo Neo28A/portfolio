@@ -57,40 +57,47 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
+    let retryCount = 0;
+    const maxRetries = 3;
+
     const fetchWeather = async () => {
         try {
             setIsLoading(true);
-            const response = await fetch('/api/weather?nocache=' + Date.now(), {
-                cache: 'no-store',
+            const response = await fetch('/api/weather?t=' + Date.now(), {
                 headers: {
-                    'Cache-Control': 'no-cache, no-store, must-revalidate',
-                    'Pragma': 'no-cache',
-                    'Expires': '0'
+                    'Cache-Control': 'no-cache',
+                    'Pragma': 'no-cache'
                 }
             });
             
-            if (!response.ok) {
-                const errorData = await response.json();
-                console.error('Weather fetch failed:', errorData);
-                throw new Error('Weather fetch failed');
-            }
-            
             const data = await response.json();
+
+            // Log the response for debugging
+            console.log('[Weather Client] Response:', { status: response.status, data });
             
-            if (data.error) {
-                console.error('Weather API error:', data.error);
-                throw new Error(data.error);
+            if (!response.ok || data.error) {
+                console.error('[Weather Client] Error:', data.error || 'Failed to fetch weather');
+                throw new Error(data.error || 'Failed to fetch weather');
             }
-            
+
             setWeather({
                 ...data,
                 temp: Math.round(data.temp),
                 feels_like: Math.round(data.feels_like)
             });
+            retryCount = 0; // Reset retry count on success
             
         } catch (error) {
-            console.error('Failed to fetch weather:', error);
-            setWeather(null);
+            console.error('[Weather Client] Fetch error:', error);
+            
+            // Implement retry logic
+            if (retryCount < maxRetries) {
+                retryCount++;
+                console.log(`[Weather Client] Retrying... (${retryCount}/${maxRetries})`);
+                setTimeout(fetchWeather, 2000 * retryCount); // Exponential backoff
+            } else {
+                setWeather(null);
+            }
         } finally {
             setIsLoading(false);
         }
