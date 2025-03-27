@@ -13,13 +13,46 @@ import Link from "next/link";
 import { useEffect, useState } from "react"
 
 type WeatherData = {
-  temp: number;
-  condition: string;
-  icon: string;
-  feels_like: number;
-  humidity: number;
-  wind_kph: number;
-  last_updated: string;
+  current: {
+    temp_c: number;
+    temp_f: number;
+    condition: string;
+    icon: string;
+    feelslike_c: number;
+    humidity: number;
+    wind_kph: number;
+    wind_dir: string;
+    pressure_mb: number;
+    precip_mm: number;
+    cloud: number;
+    uv: number;
+    last_updated: string;
+  };
+  location: {
+    name: string;
+    region: string;
+    country: string;
+    localtime: string;
+  };
+  forecast: Array<{
+    date: string;
+    max_temp_c: number;
+    min_temp_c: number;
+    condition: string;
+    icon: string;
+    sunrise: string;
+    sunset: string;
+    moonrise: string;
+    moonset: string;
+    moon_phase: string;
+  }>;
+  air_quality: {
+    co: number;
+    no2: number;
+    o3: number;
+    pm2_5: number;
+    pm10: number;
+  };
 };
 
 export default function Home() {
@@ -107,43 +140,112 @@ export default function Home() {
               <DialogTrigger asChild>
                 <div className="flex items-center gap-2 text-muted-foreground/80 group relative cursor-pointer hover:text-foreground transition-colors">
                   <div className="flex items-center gap-1.5">
-                    {getWeatherIcon(weather.icon)}
+                    <img
+                      src={weather.current.icon}
+                      alt={weather.current.condition}
+                      className="w-8 h-8"
+                    />
                     <div className="flex flex-col items-end">
-                      <span className="text-sm font-medium">{weather.temp}°C</span>
+                      <span className="text-sm font-medium">{weather.current.temp_c}°C</span>
+                      <span className="text-[10px] text-muted-foreground">{weather.current.condition}</span>
                     </div>
-                    <span className="text-xs">Bengaluru</span>
                   </div>
                 </div>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <div className="grid gap-4">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-lg font-semibold">Weather in Bengaluru</h4>
-                    <img src={weather.icon} alt={weather.condition} className="w-12 h-12" />
+              <DialogContent className="sm:max-w-[500px]">
+                <div className="grid gap-6">
+                  {/* Location and Current Weather */}
+                  <div className="space-y-2">
+                    <h4 className="text-xl font-semibold">
+                      {weather.location.name}, {weather.location.country}
+                    </h4>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <img src={weather.current.icon} alt={weather.current.condition} className="w-16 h-16" />
+                        <div>
+                          <div className="text-3xl font-bold">{weather.current.temp_c}°C</div>
+                          <div className="text-sm text-muted-foreground">{weather.current.condition}</div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm">Feels like {weather.current.feelslike_c}°C</div>
+                        <div className="text-xs text-muted-foreground">
+                          Updated: {new Date(weather.current.last_updated).toLocaleTimeString()}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="grid gap-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Temperature</span>
-                      <span className="font-medium">{weather.temp}°C</span>
+
+                  {/* Current Details */}
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Humidity</span>
+                        <span>{weather.current.humidity}%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Wind</span>
+                        <span>{weather.current.wind_kph} km/h {weather.current.wind_dir}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Pressure</span>
+                        <span>{weather.current.pressure_mb} mb</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Feels like</span>
-                      <span className="font-medium">{weather.feels_like}°C</span>
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">UV Index</span>
+                        <span>{weather.current.uv}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Cloud Cover</span>
+                        <span>{weather.current.cloud}%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Precipitation</span>
+                        <span>{weather.current.precip_mm} mm</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Condition</span>
-                      <span className="font-medium">{weather.condition}</span>
+                  </div>
+
+                  {/* Forecast */}
+                  <div className="space-y-2">
+                    <h5 className="text-sm font-semibold">Forecast</h5>
+                    <div className="grid grid-cols-2 gap-4">
+                      {weather.forecast.map((day) => (
+                        <div key={day.date} className="flex items-center justify-between p-2 rounded-lg bg-secondary/50">
+                          <div className="flex items-center gap-2">
+                            <img src={day.icon} alt={day.condition} className="w-8 h-8" />
+                            <div className="text-xs">
+                              <div>{new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}</div>
+                              <div className="text-muted-foreground">{day.condition}</div>
+                            </div>
+                          </div>
+                          <div className="text-right text-xs">
+                            <div>{day.max_temp_c}°</div>
+                            <div className="text-muted-foreground">{day.min_temp_c}°</div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Humidity</span>
-                      <span className="font-medium">{weather.humidity}%</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-muted-foreground">Wind Speed</span>
-                      <span className="font-medium">{weather.wind_kph} km/h</span>
-                    </div>
-                    <div className="flex justify-between items-center text-xs text-muted-foreground mt-2">
-                      <span>Last updated: {new Date(weather.last_updated).toLocaleTimeString()}</span>
+                  </div>
+
+                  {/* Air Quality */}
+                  <div className="space-y-2">
+                    <h5 className="text-sm font-semibold">Air Quality</h5>
+                    <div className="grid grid-cols-3 gap-2 text-xs">
+                      <div className="p-2 rounded-lg bg-secondary/50">
+                        <div className="text-muted-foreground">PM2.5</div>
+                        <div className="font-medium">{weather.air_quality.pm2_5.toFixed(1)}</div>
+                      </div>
+                      <div className="p-2 rounded-lg bg-secondary/50">
+                        <div className="text-muted-foreground">PM10</div>
+                        <div className="font-medium">{weather.air_quality.pm10.toFixed(1)}</div>
+                      </div>
+                      <div className="p-2 rounded-lg bg-secondary/50">
+                        <div className="text-muted-foreground">O₃</div>
+                        <div className="font-medium">{weather.air_quality.o3.toFixed(1)}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
