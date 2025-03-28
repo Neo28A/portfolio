@@ -126,12 +126,13 @@ export default function Home() {
           
 
         <section className="flex flex-col gap-3 pt-1 animate-on-load delay-100">
-          <h1 className="text-[45px] font-normal tracking-tight leading-[50px] mb-2 relative">
+          <h1 className="text-[46px] font-normal tracking-tight leading-[50px] mb-2 relative">
             <span className="absolute text-[#DA7756]/20 left-[4px] top-[4px] font-copernicus tracking-wide">Chetan Kittali</span>
             <span className="absolute text-[#DA7756]/40 left-[3px] top-[3px] font-copernicus tracking-wide">Chetan Kittali</span>
             <span className="absolute text-[#DA7756]/60 left-[2px] top-[2px] font-copernicus tracking-wide">Chetan Kittali</span>
             <span className="absolute text-[#DA7756]/80 left-[1px] top-[1px] font-copernicus tracking-wide">Chetan Kittali</span>
             <span className="relative z-10 text-[#DA7756] font-copernicus tracking-wide">Chetan Kittali</span>
+            
           </h1>
           
           <div className="flex items-center gap-2 text-[14.9px] tracking-[-0.4px] font-medium text-emperor">
