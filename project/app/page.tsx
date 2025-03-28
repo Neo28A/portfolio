@@ -24,23 +24,32 @@ export default function Home() {
   const [localTime, setLocalTime] = useState<string>("")
   const [gmtTime, setGmtTime] = useState<string>("")
   const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [weatherError, setWeatherError] = useState<string | null>(null);
 
   const fetchWeather = async () => {
     try {
-      const response = await fetch('/api/weather', {
+      const timestamp = new Date().getTime();
+      const response = await fetch(`/api/weather?t=${timestamp}`, {
         cache: 'no-store',
         headers: {
-          'Cache-Control': 'no-cache'
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
         }
       });
       
       if (!response.ok) {
-        throw new Error('Failed to fetch weather data');
+        const error = await response.text();
+        console.error('Weather fetch error:', error);
+        setWeatherError('Unable to load weather data');
+        return;
       }
+      
       const data = await response.json();
       setWeather(data);
-    } catch (error) {
-      console.error('Error fetching weather:', error);
+      setWeatherError(null);
+    } catch (err) {
+      console.error('Weather fetch error:', err);
+      setWeatherError('Unable to load weather data');
     }
   };
 
@@ -168,31 +177,31 @@ export default function Home() {
             <a href="https://github.com/Neo28A" 
               target="_blank" 
               rel="noopener noreferrer" 
-              className="group flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/30 backdrop-blur-sm border border-gray-100/30 transition-colors duration-200 hover:border-primary"
+              className="group flex items-center gap-2 px-2 sm:px-3 py-1.5 rounded-full bg-white/30 backdrop-blur-sm border border-gray-100/30 transition-colors duration-200 hover:border-primary"
             >
               <span className="text-muted-foreground/80 group-hover:text-primary/90 transition-colors duration-200">
                 <Github size={16} />
               </span>
-              <span className="font-medium text-muted-foreground/90 text-[13px] tracking-[-0.3px] leading-5 group-hover:text-primary/90 transition-colors duration-200">
+              <span className="hidden sm:inline font-medium text-muted-foreground/90 text-[13px] tracking-[-0.3px] leading-5 group-hover:text-primary/90 transition-colors duration-200">
                 GitHub
               </span>
             </a>
             <a href="https://www.linkedin.com/in/chetan-kittali-44b94928a/" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-              className="group flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/30 backdrop-blur-sm border border-gray-100/30 transition-colors duration-200 hover:border-primary"
+              className="group flex items-center gap-2 px-2 sm:px-3 py-1.5 rounded-full bg-white/30 backdrop-blur-sm border border-gray-100/30 transition-colors duration-200 hover:border-primary"
             >
               <span className="text-muted-foreground/80 group-hover:text-primary/90 transition-colors duration-200">
                 <Linkedin size={16} />
               </span>
-              <span className="font-medium text-muted-foreground/90 text-[13px] tracking-[-0.3px] leading-5 group-hover:text-primary/90 transition-colors duration-200">
+              <span className="hidden sm:inline font-medium text-muted-foreground/90 text-[13px] tracking-[-0.3px] leading-5 group-hover:text-primary/90 transition-colors duration-200">
                 LinkedIn
               </span>
             </a>
             <a href="https://x.com/ChetanKittali" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-              className="group flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/30 backdrop-blur-sm border border-gray-100/30 transition-colors duration-200 hover:border-primary"
+              className="group flex items-center gap-2 px-2 sm:px-3 py-1.5 rounded-full bg-white/30 backdrop-blur-sm border border-gray-100/30 transition-colors duration-200 hover:border-primary"
             >
               <span className="text-muted-foreground/80 group-hover:text-primary/90 transition-colors duration-200">
                 <svg
@@ -209,17 +218,17 @@ export default function Home() {
                   <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
                 </svg>
               </span>
-              <span className="font-medium text-muted-foreground/90 text-[13px] tracking-[-0.3px] leading-5 group-hover:text-primary/90 transition-colors duration-200">
+              <span className="hidden sm:inline font-medium text-muted-foreground/90 text-[13px] tracking-[-0.3px] leading-5 group-hover:text-primary/90 transition-colors duration-200">
                 X
               </span>
             </a>
             <a href="mailto:chetankittali7@gmail.com"
-              className="group flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/30 backdrop-blur-sm border border-gray-100/30 transition-colors duration-200 hover:border-primary"
+              className="group flex items-center gap-2 px-2 sm:px-3 py-1.5 rounded-full bg-white/30 backdrop-blur-sm border border-gray-100/30 transition-colors duration-200 hover:border-primary"
             >
               <span className="text-muted-foreground/80 group-hover:text-primary/90 transition-colors duration-200">
                 <Mail size={16} />
               </span>
-              <span className="font-medium text-muted-foreground/90 text-[13px] tracking-[-0.3px] leading-5 group-hover:text-primary/90 transition-colors duration-200">
+              <span className="hidden sm:inline font-medium text-muted-foreground/90 text-[13px] tracking-[-0.3px] leading-5 group-hover:text-primary/90 transition-colors duration-200">
                 Email
               </span>
             </a>

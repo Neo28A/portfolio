@@ -2,41 +2,56 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    // Use environment variable or hardcode your API key (for demo purposes)
-    // In production, always use environment variables for API keys
-    const apiKey = process.env.WEATHER_API_KEY || "your_api_key_here";
+    const apiKey = process.env.WEATHER_API_KEY;
     
-    // Reduce revalidation time to 2 minutes
+    if (!apiKey) {
+      console.error('Weather API key is not configured');
+      throw new Error('Weather API key is missing');
+    }
+
+    // Add current timestamp to prevent caching
+    const timestamp = new Date().getTime();
     const response = await fetch(
-      `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=Hubli&aqi=no`,
+      `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=Hubli&aqi=no&t=${timestamp}`,
       {
         cache: 'no-store',
         headers: {
-          'Cache-Control': 'no-cache'
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
         }
       }
     );
     
     if (!response.ok) {
-      throw new Error('Failed to fetch weather data');
+      const errorText = await response.text();
+      console.error('Weather API response error:', errorText);
+      throw new Error(`Weather API failed with status ${response.status}`);
     }
     
     const data = await response.json();
     
-    // Return response with shorter cache duration
+    // Log the received temperature for debugging
+    console.log('Received weather data:', {
+      temp: data.current.temp_c,
+      location: data.location.name,
+      last_updated: data.current.last_updated
+    });
+    
     return new NextResponse(
       JSON.stringify({
         temp: Math.round(data.current.temp_c),
         condition: data.current.condition.text,
         icon: data.current.condition.icon,
         feels_like: Math.round(data.current.feelslike_c),
-        last_updated: new Date().toISOString() // Add timestamp for debugging
+        last_updated: data.current.last_updated
       }),
       {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'no-cache, no-store, must-revalidate'
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
         }
       }
     );
@@ -44,7 +59,7 @@ export async function GET() {
   } catch (error) {
     console.error('Weather API error:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch weather data' },
+      { error: 'Failed to fetch weather data', details: error.message },
       { status: 500 }
     );
   }
