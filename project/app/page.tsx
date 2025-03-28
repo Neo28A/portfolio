@@ -25,6 +25,25 @@ export default function Home() {
   const [gmtTime, setGmtTime] = useState<string>("")
   const [weather, setWeather] = useState<WeatherData | null>(null);
 
+  const fetchWeather = async () => {
+    try {
+      const response = await fetch('/api/weather', {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache'
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch weather data');
+      }
+      const data = await response.json();
+      setWeather(data);
+    } catch (error) {
+      console.error('Error fetching weather:', error);
+    }
+  };
+
   useEffect(() => {
     const updateTime = () => {
       const now = new Date()
@@ -48,27 +67,26 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    const fetchWeather = async () => {
-      try {
-        const response = await fetch('/api/weather', {
-          cache: 'no-store',
-          next: { revalidate: 0 }
-        });
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch weather data');
-        }
-        const data = await response.json();
-        setWeather(data);
-      } catch (error) {
-        console.error('Error fetching weather:', error);
+    // Initial fetch
+    fetchWeather();
+
+    // Fetch every 2 minutes
+    const weatherInterval = setInterval(fetchWeather, 2 * 60 * 1000);
+
+    // Fetch when tab becomes visible
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        fetchWeather();
       }
     };
 
-    fetchWeather();
-    // Refresh weather data every 5 minutes
-    const weatherInterval = setInterval(fetchWeather, 5 * 60 * 1000);
-    return () => clearInterval(weatherInterval);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    // Cleanup
+    return () => {
+      clearInterval(weatherInterval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
   // Helper function to get the appropriate weather icon
@@ -132,7 +150,6 @@ export default function Home() {
             <span className="absolute text-[#DA7756]/60 left-[2px] top-[2px] font-copernicus tracking-wide">Chetan Kittali</span>
             <span className="absolute text-[#DA7756]/80 left-[1px] top-[1px] font-copernicus tracking-wide">Chetan Kittali</span>
             <span className="relative z-10 text-[#DA7756] font-copernicus tracking-wide">Chetan Kittali</span>
-            
           </h1>
           
           <div className="flex items-center gap-2 text-[14.9px] tracking-[-0.4px] font-medium text-emperor">

@@ -6,12 +6,13 @@ export async function GET() {
     // In production, always use environment variables for API keys
     const apiKey = process.env.WEATHER_API_KEY || "your_api_key_here";
     
-    // Add cache-control headers to the WeatherAPI request
+    // Reduce revalidation time to 2 minutes
     const response = await fetch(
       `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=Hubli&aqi=no`,
       {
-        next: {
-          revalidate: 300 // Revalidate every 5 minutes
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache'
         }
       }
     );
@@ -22,19 +23,20 @@ export async function GET() {
     
     const data = await response.json();
     
-    // Return response with cache control headers
+    // Return response with shorter cache duration
     return new NextResponse(
       JSON.stringify({
         temp: Math.round(data.current.temp_c),
         condition: data.current.condition.text,
         icon: data.current.condition.icon,
-        feels_like: Math.round(data.current.feelslike_c)
+        feels_like: Math.round(data.current.feelslike_c),
+        last_updated: new Date().toISOString() // Add timestamp for debugging
       }),
       {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=60'
+          'Cache-Control': 'no-cache, no-store, must-revalidate'
         }
       }
     );
