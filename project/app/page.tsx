@@ -306,14 +306,22 @@ export default function Home() {
               target="_blank"
             />
             <WorkItem 
-              title="Healthcare Analytics" 
-              href="#healthcare-analytics" 
-              description="Advanced analytics platform for patient health metrics visualization and insights"
+              title="Healthcare Data Analytics" 
+              href="https://sweltering-snowman-776.notion.site/Healthcare-Analytics-Tableau-1c3dbb77562780e3be4dffcfece5099b?pvs=4"
+              target="_blank" 
+              description="A Tableau project analyzing patient health data through interactive visualizations of diabetes, blood pressure, and BMI trends."
+            />
+            <WorkItem
+              title="Superstore Sales Performance Analysis"
+              href="https://sweltering-snowman-776.notion.site/Superstore-Sales-Performance-Analysis-Tableau-1c3dbb77562780be8a52fffbcd17209b?pvs=4"
+              target="_blank"
+              description="A Tableau project analyzing sales, profit, and customer trends using interactive visualizations to uncover key business insights."
             />
             <a 
               href="https://github.com/Neo28A" 
               target="_blank"
-              rel="noopener noreferrer"
+
+ta              rel="noopener noreferrer"
               className="group flex items-center justify-center p-2 rounded-lg hover:bg-secondary/30 transition-colors"
             >
               <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground/90 group-hover:text-primary">

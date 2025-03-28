@@ -56,10 +56,18 @@ export async function GET() {
       }
     );
     
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Weather API error:', error);
+    
+    const errorMessage = error instanceof Error 
+      ? error.message 
+      : 'An unknown error occurred';
+    
     return NextResponse.json(
-      { error: 'Failed to fetch weather data', details: error.message },
+      { 
+        error: 'Failed to fetch weather data', 
+        details: errorMessage 
+      },
       { status: 500 }
     );
   }
