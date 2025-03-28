@@ -79,8 +79,8 @@ export default function Home() {
     // Initial fetch
     fetchWeather();
 
-    // Fetch every 2 minutes
-    const weatherInterval = setInterval(fetchWeather, 2 * 60 * 1000);
+    // Fetch every 1 minute
+    const weatherInterval = setInterval(fetchWeather, 60 * 1000);
 
     // Fetch when tab becomes visible
     const handleVisibilityChange = () => {
@@ -320,8 +320,7 @@ export default function Home() {
             <a 
               href="https://github.com/Neo28A" 
               target="_blank"
-
-ta              rel="noopener noreferrer"
+              rel="noopener noreferrer"
               className="group flex items-center justify-center p-2 rounded-lg hover:bg-secondary/30 transition-colors"
             >
               <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground/90 group-hover:text-primary">

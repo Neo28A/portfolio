@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+export const revalidate = 0; // Disable Next.js cache
+
 export async function GET() {
   try {
     const apiKey = process.env.WEATHER_API_KEY;
@@ -15,8 +17,9 @@ export async function GET() {
       `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=Hubli&aqi=no&t=${timestamp}`,
       {
         cache: 'no-store',
+        next: { revalidate: 0 },
         headers: {
-          'Cache-Control': 'no-cache',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
           'Pragma': 'no-cache'
         }
       }
@@ -34,7 +37,8 @@ export async function GET() {
     console.log('Received weather data:', {
       temp: data.current.temp_c,
       location: data.location.name,
-      last_updated: data.current.last_updated
+      last_updated: data.current.last_updated,
+      timestamp: new Date().toISOString()
     });
     
     return new NextResponse(
@@ -49,7 +53,7 @@ export async function GET() {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
           'Pragma': 'no-cache',
           'Expires': '0'
         }
@@ -68,7 +72,14 @@ export async function GET() {
         error: 'Failed to fetch weather data', 
         details: errorMessage 
       },
-      { status: 500 }
+      { 
+        status: 500,
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      }
     );
   }
 } 
