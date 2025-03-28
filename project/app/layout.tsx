@@ -6,7 +6,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import localFont from 'next/font/local';
 
 const copernicus = localFont({
-  src: './fonts/copernicus-font-family-1743103700-0/CopernicusNewCondTrial-090-BF6616044f92f03.otf',
+  src: './fonts/copernicus-font-family-1743103700-0/CopernicusNewCondTrial-070-BF6616044f8a3ab.otf',
   variable: '--font-copernicus',
   display: 'swap',
 });
