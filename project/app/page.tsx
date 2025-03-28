@@ -127,11 +127,11 @@ export default function Home() {
 
         <section className="flex flex-col gap-3 pt-1 animate-on-load delay-100">
           <h1 className="text-[48px] font-extrabold tracking-tight leading-[60px] mb-7 relative">
-            <span className="absolute text-[#DA7756]/20 left-[4px] top-[4px] font-playfair tracking-wide">Chetan Kittali</span>
-            <span className="absolute text-[#DA7756]/40 left-[3px] top-[3px] font-playfair tracking-wide">Chetan Kittali</span>
-            <span className="absolute text-[#DA7756]/60 left-[2px] top-[2px] font-playfair tracking-wide">Chetan Kittali</span>
-            <span className="absolute text-[#DA7756]/80 left-[1px] top-[1px] font-playfair tracking-wide">Chetan Kittali</span>
-            <span className="relative z-10 text-[#DA7756] font-playfair tracking-wide">Chetan Kittali</span>
+            <span className="absolute text-[#DA7756]/20 left-[4px] top-[4px] font-copernicus tracking-wide">Chetan Kittali</span>
+            <span className="absolute text-[#DA7756]/40 left-[3px] top-[3px] font-copernicus tracking-wide">Chetan Kittali</span>
+            <span className="absolute text-[#DA7756]/60 left-[2px] top-[2px] font-copernicus tracking-wide">Chetan Kittali</span>
+            <span className="absolute text-[#DA7756]/80 left-[1px] top-[1px] font-copernicus tracking-wide">Chetan Kittali</span>
+            <span className="relative z-10 text-[#DA7756] font-copernicus tracking-wide">Chetan Kittali</span>
           </h1>
           
           <div className="flex items-center gap-2 text-[14.9px] tracking-[-0.4px] font-medium text-emperor">
@@ -143,7 +143,7 @@ export default function Home() {
           </div>
           
           <p className="text-[14px] leading-7 text-muted-foreground/90 tracking-[-0.3px]">
-            Building intelligent systems that solve real-world problems. Specialized in <span className="text-foreground/90 font-medium border-b-2 border-[#DA7756]/70">machine learning</span>, <span className="text-foreground/90 font-medium border-b-2 border-[#DA7756]/70">data analysis</span>, and <span className="text-foreground/90 font-medium border-b-2 border-[#DA7756]/70">pattern recognition</span>. Currently focused on developing scalable AI solutions and exploring emerging technologies.
+            Building intelligent systems that solve real-world problems. Specialized in <span className="text-foreground/90 font-medium">machine learning</span>, <span className="text-foreground/90 font-medium">data analysis</span>, and <span className="text-foreground/90 font-medium">pattern recognition</span>. Currently focused on developing scalable AI solutions and exploring emerging technologies.
           </p>
           
           <div className="flex flex-wrap gap-2 mt-4">

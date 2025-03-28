@@ -3,12 +3,12 @@ import type { Metadata } from 'next';
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import { ThemeProvider } from '@/components/theme-provider';
-import { Playfair_Display } from 'next/font/google';
+import localFont from 'next/font/local';
 
-const playfair = Playfair_Display({ 
-  subsets: ['latin'],
+const copernicus = localFont({
+  src: './fonts/copernicus-font-family-1743103700-0/CopernicusNewCondTrial-090-BF6616044f92f03.otf',
+  variable: '--font-copernicus',
   display: 'swap',
-  variable: '--font-playfair',
 });
 
 export const metadata: Metadata = {
@@ -32,7 +32,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${GeistSans.className} ${playfair.variable} antialiased`}>
+      <body className={`${GeistSans.className} ${copernicus.variable} antialiased`}>
         <ThemeProvider>
           {children}
         </ThemeProvider>
